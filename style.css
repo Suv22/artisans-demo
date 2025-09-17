@@ -1,0 +1,256 @@
+/* style.css */
+
+/* --- Fonts & Root Variables --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-color: #fffdf8;
+    --sidebar-bg: #ffffff;
+    --main-bg: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --accent-color: #4f46e5;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    
+    --status-pending-bg: #fef9c3;
+    --status-pending-text: #854d0e;
+    --status-approved-bg: #dcfce7;
+    --status-approved-text: #166534;
+    --status-rejected-bg: #fee2e2;
+    --status-rejected-text: #991b1b;
+
+    --font-family: 'Inter', sans-serif;
+    --radius: 0.5rem;
+}
+
+/* --- Base & Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+}
+
+/* --- Main Layout --- */
+.sidebar {
+    width: 240px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    padding: 2rem;
+}
+
+/* --- Sidebar --- */
+.sidebar-header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.sidebar-nav a.active {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.sidebar-nav a svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- Header --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* --- Artisan Table --- */
+.table-container {
+    background-color: var(--main-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+td {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+.status-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+.status-approved { background-color: var(--status-approved-bg); color: var(--status-approved-text); }
+.status-rejected { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
+
+.action-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-right: 0.5rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+.action-buttons button:hover { color: var(--text-primary); }
+.action-buttons button svg { width: 18px; height: 18px; }
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(17, 24, 39, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000;
+}
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    transform: scale(0.95);
+    transition: transform 0.3s;
+}
+.modal-overlay.visible .modal-container {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 { font-size: 1.25rem; }
+.modal-close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); }
+
+.modal-body { max-height: 60vh; overflow-y: auto; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+.info-item h4 { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
+.info-item p { font-weight: 500; }
+
+.image-gallery h4 { margin-bottom: 1rem; }
+.image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; }
+.image-grid img { width: 100%; height: 80px; object-fit: cover; border-radius: calc(var(--radius) - 2px); }
+
+.qr-code img { margin-top: 1rem; padding: 0.5rem; border: 1px solid var(--border-color); }
+
+/* --- Toast Notification --- */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    transition: transform 0.4s ease-in-out;
+    z-index: 2000;
+}
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+.toast.success { background-color: #22c55e; }
+.toast.error { background-color: #ef4444; }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+    }
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    th, td { padding: 0.75rem; }
+    .info-grid { grid-template-columns: 1fr; }
+}

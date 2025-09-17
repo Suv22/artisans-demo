@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artisan Verification Form</title>
+
+    <style>
+      /* CSS Variables (Theme) */
+      :root {
+        --background: 45 15% 97%;
+        --foreground: 20 14% 12%;
+        --card: 0 0% 100%;
+        --primary: 18 80% 52%;
+        --primary-foreground: 45 15% 97%;
+        --muted-foreground: 25 8% 45%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 18 80% 52%;
+        --radius: 0.5rem;
+      }
+
+      /* Basic Reset and Body Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Layout Styles */
+      .container {
+        max-width: 42rem; /* 672px */
+        margin: 0 auto;
+        padding: 1rem;
+      }
+      @media (min-width: 768px) {
+        .container {
+          padding: 2rem;
+        }
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      header h1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: hsl(var(--primary));
+      }
+
+      header p {
+        color: hsl(var(--muted-foreground));
+        margin-top: 0.5rem;
+      }
+
+      /* Form Styles */
+      .artisan-form {
+        background-color: hsl(var(--card));
+        padding: 2rem;
+        border-radius: var(--radius);
+        border: 1px solid hsl(var(--border));
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+          0 2px 4px -2px rgba(0, 0, 0, 0.07);
+      }
+
+      /* Adds vertical space between direct children of the form */
+      .artisan-form > * + * {
+        margin-top: 1.5rem;
+      }
+
+      /* Form Element Styles */
+      label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        background-color: hsl(var(--background));
+        border: 1px solid hsl(var(--input));
+        border-radius: calc(var(--radius) - 2px);
+        font-size: 1rem;
+        color: hsl(var(--foreground));
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: hsl(var(--ring));
+        box-shadow: 0 0 0 2px hsla(var(--ring), 0.5);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      @media (min-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .form-file-input {
+        width: 100%;
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+      }
+
+      .form-file-input::file-selector-button {
+        margin-right: 1rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: calc(var(--radius) - 2px);
+        font-size: 0.875rem;
+        font-weight: 600;
+        background-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .form-file-input::file-selector-button:hover {
+        opacity: 0.9;
+      }
+
+      .submit-btn {
+        width: 100%;
+        background-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: calc(var(--radius) - 2px);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .submit-btn:hover {
+        opacity: 0.9;
+      }
+
+      .submit-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Message Box & Footer */
+      .message-box {
+        text-align: center;
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border-radius: calc(var(--radius) - 2px);
+        display: none; /* Initially hidden */
+      }
+      .message-box.show {
+        display: block;
+      }
+      .message-box.success {
+        background-color: #d1fae5; /* A light green */
+        color: #065f46; /* A dark green */
+      }
+      .message-box.error {
+        background-color: #fee2e2; /* A light red */
+        color: #991b1b; /* A dark red */
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 1.5rem;
+      }
+
+      footer a {
+        font-size: 0.875rem;
+        color: hsl(var(--primary));
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Artisan Verification</h1>
+        <p>Submit your details and craft for verification.</p>
+      </header>
+
+      <form id="artisanForm" class="artisan-form">
+        <div>
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="aadhaar_last4">Last 4 Digits of Aadhaar</label>
+          <input
+            type="text"
+            id="aadhaar_last4"
+            name="aadhaar_last4"
+            required
+            minlength="4"
+            maxlength="4"
+            pattern="\d{4}"
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="location">Location (City, State)</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            required
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-grid">
+          <div>
+            <label for="aadhaar_front">Aadhaar Card (Front)</label>
+            <input
+              type="file"
+              id="aadhaar_front"
+              name="aadhaar_front"
+              required
+              accept="image/*"
+              class="form-file-input"
+            />
+          </div>
+          <div>
+            <label for="aadhaar_back">Aadhaar Card (Back)</label>
+            <input
+              type="file"
+              id="aadhaar_back"
+              name="aadhaar_back"
+              required
+              accept="image/*"
+              class="form-file-input"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="craft_photos">Craft Photos (min 2, max 3)</label>
+          <input
+            type="file"
+            id="craft_photos"
+            name="craft_photos"
+            required
+            multiple
+            accept="image/*"
+            class="form-file-input"
+          />
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn">
+          Submit for Verification
+        </button>
+
+        <div id="message" class="message-box"></div>
+      </form>
+      <footer>
+        <a href="admin.html">Admin Dashboard</a>
+      </footer>
+    </div>
+
+    <script type="module">
+      import { supabase } from "./supabase.js";
+
+      const form = document.getElementById("artisanForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const messageDiv = document.getElementById("message");
+      const craftPhotosInput = document.getElementById("craft_photos");
+
+      // Simple client-side validation for file count
+      craftPhotosInput.addEventListener("change", () => {
+        const files = craftPhotosInput.files;
+        if (files.length < 2 || files.length > 3) {
+          craftPhotosInput.setCustomValidity(
+            "Please upload between 2 and 3 craft photos."
+          );
+        } else {
+          craftPhotosInput.setCustomValidity("");
+        }
+      });
+
+      const { data: lastArtisan } = await supabase
+        .from("artisans_public")
+        .select("artisan_id")
+        .order("artisan_id", { ascending: false })
+        .limit(1)
+        .single();
+
+      let newId = "ART001";
+      if (lastArtisan && lastArtisan.artisan_id) {
+        // Extract number and increment
+        const lastNum = parseInt(lastArtisan.artisan_id.replace("ART", ""), 10);
+        const nextNum = (lastNum + 1).toString().padStart(3, "0");
+        newId = `ART${nextNum}`;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+          const formData = new FormData(form);
+
+          // Map form fields to table columns
+          const name = formData.get("name");
+          const place = formData.get("location");
+        //   const artisan_id = crypto.randomUUID();
+          // Insert into table, set other fields as NULL
+          const { error } = await supabase.from("artisans_public").insert([
+            {
+              artisan_id: newId,
+              name,
+              craft: null,
+              place,
+              lineage: null,
+              awards: null,
+              one_liner: null,
+              quote: null,
+              craft_process: null,
+              gi_tag_info: null,
+              verification_notes: null,
+              photo_link: null,
+              workshop_photo_link: null,
+              video_link: null,
+              business_identity: null,
+            },
+          ]);
+
+          if (error) throw error;
+
+          showMessage(
+            "Submission successful! Your application is under review.",
+            "success"
+          );
+          form.reset();
+        } catch (err) {
+          console.error("Submission Error:", err);
+          showMessage(`Error: ${err.message}`, "error");
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      // Helper function to upload a single file
+      async function uploadFile(file, path) {
+        const { data, error } = await supabase.storage
+          .from("artisan_files")
+          .upload(path, file, { upsert: true });
+
+        if (error) throw error;
+
+        // Get public URL for the uploaded file
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("artisan_files").getPublicUrl(path);
+
+        return publicUrl;
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        submitBtn.textContent = isLoading
+          ? "Submitting..."
+          : "Submit for Verification";
+      }
+
+      function showMessage(msg, type = "success") {
+        messageDiv.textContent = msg;
+        // Reset classes and add new ones for styling the message box
+        messageDiv.className = "message-box";
+        messageDiv.classList.add("show", type); // 'type' will be 'success' or 'error'
+      }
+    </script>
+  </body>
+</html>

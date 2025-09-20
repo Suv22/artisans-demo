@@ -142,13 +142,28 @@ tr:last-child td {
 }
 
 .status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-block;
+  transition: 0.2s;
 }
-.status-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
-.status-approved { background-color: var(--status-approved-bg); color: var(--status-approved-text); }
+
+.status-pending {
+    background-color: orange;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.status-approved {
+    background-color: green;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
 .status-rejected { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
 
 .action-buttons button {

@@ -1,6 +1,7 @@
 // artisan.js
 import { supabase } from "./supabase.js";
 
+
 // DOM Elements
 const profileContainer = document.getElementById("profile-container");
 
@@ -18,7 +19,18 @@ const ICONS = {
  * @param {object|null} artisan - The artisan data object, or null if not found.
  * @param {Error|null} error - An error object if the fetch failed.
  */
-function renderProfile(artisan, error) {
+
+// async function getPhotoUrl(filePath) {
+//   if (!filePath) return null;
+
+//   const { data } = supabase.storage
+//     .from("artisan_files")
+//     .getPublicUrl(filePath);
+
+//   return data.publicUrl || null;
+// }
+
+async function renderProfile(artisan, error) {
   if (error || !artisan) {
     profileContainer.innerHTML = `
             <div class="status-container">
@@ -29,7 +41,10 @@ function renderProfile(artisan, error) {
             </div>`;
     return;
   }
+  
+  
 
+  // const photoUrl = await getPhotoUrl(artisan.photo_link);
   // --- Data Parsing ---
   const awards = artisan.awards
     ? artisan.awards.split(",").map((award) => award.trim())
@@ -57,38 +72,45 @@ function renderProfile(artisan, error) {
   // --- HTML Template Generation ---
   const html = `
         <header class="profile-header">
-            <div class="header-overlay"></div>
-            <div class="header-content container">
-                <div class="profile-picture">
-                    <img src="${
-                      artisan.photo_link || "placeholder.jpg"
-                    }" alt="${artisan.name}">
-                </div>
-                <h1>${artisan.name}</h1>
-                <div class="header-meta">
-                    <div class="header-meta-item craft-name">${
-                      artisan.craft
-                    }</div>
-                    <div class="header-meta-item">${ICONS.mapPin}<span>${
+  <div class="header-overlay"></div>
+  <div class="header-content container header-flex">
+    <!-- Left side: Profile Info -->
+    <div class="profile-left">
+      <div class="profile-picture">
+        <img src="${photos.length > 0 ? photos[0] : "placeholder.jpg"}" alt="${
+    artisan.name
+  }">
+      </div>
+      <h1>${artisan.name}</h1>
+      <div class="header-meta">
+        <div class="header-meta-item craft-name">${artisan.craft}</div>
+        <div class="header-meta-item">${ICONS.mapPin}<span>${
     artisan.place
   }</span></div>
-                </div>
-                <div class="header-badges">
-                    ${
-                      artisan.lineage
-                        ? `<div class="badge light">${artisan.lineage}</div>`
-                        : ""
-                    }
-                    ${awards
-                      .slice(0, 2)
-                      .map(
-                        (award) =>
-                          `<div class="badge gold">${ICONS.award}${award}</div>`
-                      )
-                      .join("")}
-                </div>
-            </div>
-        </header>
+      </div>
+      <div class="header-badges">
+        ${
+          artisan.lineage
+            ? `<div class="badge light">${artisan.lineage}</div>`
+            : ""
+        }
+        ${awards
+          .slice(0, 2)
+          .map(
+            (award) => `<div class="badge gold">${ICONS.award}${award}</div>`
+          )
+          .join("")}
+      </div>
+    </div>
+
+    <!-- Right QR Code Section -->
+    <div id="qr-section" style="display:none; margin-top:1rem;">
+      <h3> QR Code </h3>
+      <div id="qr-code"></div>
+    </div>
+  </div>
+</header>
+
 
         <main class="profile-body container">
             ${
@@ -198,6 +220,23 @@ function renderProfile(artisan, error) {
 
   document.title = `${artisan.name} | Artisan Profile`;
   profileContainer.innerHTML = html;
+
+  // Check if artisan is approved
+  if (artisan.status && artisan.status.toLowerCase() === "approved") {
+    const qrSection = document.getElementById("qr-section");
+    qrSection.style.display = "block"; // show the QR container
+
+    // Generate the QR code
+    const qrCodeContainer = document.getElementById("qr-code");
+    new QRCode(qrCodeContainer, {
+      text: `https://suv22.github.io/artisans-demo/artisan.html?id=${artisan.artisan_id}`,
+      width: 160,
+      height: 160,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+  }
 }
 
 /**

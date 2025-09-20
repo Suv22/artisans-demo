@@ -230,6 +230,129 @@
           />
         </div>
         <div>
+          <label for="craft">Craft</label>
+          <input
+            type="text"
+            id="craft"
+            name="craft"
+            required
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="awards">Awards</label>
+          <input
+            type="text"
+            id="awards"
+            name="awards"
+            placeholder="e.g., National Award, State Award"
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="one_liner">One Liner</label>
+          <input
+            type="text"
+            id="one_liner"
+            name="one_liner"
+            placeholder="A short tagline about the artisan"
+            class="form-input"
+          />
+        </div>
+        <div>
+          <label for="quote">Quote</label>
+          <input
+            type="text"
+            id="quote"
+            name="quote"
+            placeholder="Inspiring quote by the artisan"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Craft Process -->
+        <div>
+          <label for="craft_process">Craft Process</label>
+          <textarea
+            id="craft_process"
+            name="craft_process"
+            placeholder="Describe the craft making process"
+            class="form-input"
+          ></textarea>
+        </div>
+
+        <!-- GI Tag Info -->
+        <div>
+          <label for="g_tag_info">GI Tag Info</label>
+          <input
+            type="text"
+            id="g_tag_info"
+            name="gi_tag_info"
+            placeholder="GI Tag details if applicable"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Verification Notes (optional, admin use) -->
+        <div>
+          <label for="verification_notes">Verification Notes</label>
+          <textarea
+            id="verification_notes"
+            name="verification_notes"
+            placeholder="Admin verification notes"
+            class="form-input"
+          ></textarea>
+        </div>
+
+        <!-- Photo Link -->
+        <div>
+          <label for="photo_link">Upload Artisan Photo</label>
+          <input
+            type="file"
+            id="photo_link"
+            name="photo_link"
+            accept="image/*"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Workshop Photo Link -->
+        <div>
+          <label for="workshop_photo_link">Workshop Photo Link</label>
+          <input
+            type="url"
+            id="workshop_photo_link"
+            name="workshop_photo_link"
+            placeholder="Link to workshop photo"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Video Link -->
+        <div>
+          <label for="video_link">Video Link</label>
+          <input
+            type="url"
+            id="video_link"
+            name="video_link"
+            placeholder="Link to video"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Business Identity -->
+        <div>
+          <label for="business_identity">Business Identity (Established Year)</label>
+          <input
+            type="text"
+            id="business_identity"
+            name="business_identity"
+            placeholder="Business identity details"
+            class="form-input"
+          />
+        </div>
+
+        <div>
           <label for="aadhaar_last4">Last 4 Digits of Aadhaar</label>
           <input
             type="text"
@@ -307,33 +430,34 @@
       const form = document.getElementById("artisanForm");
       const submitBtn = document.getElementById("submitBtn");
       const messageDiv = document.getElementById("message");
-      const craftPhotosInput = document.getElementById("craft_photos");
+      // const craftPhotosInput = document.getElementById("craft_photos");
 
       // Simple client-side validation for file count
-      craftPhotosInput.addEventListener("change", () => {
-        const files = craftPhotosInput.files;
-        if (files.length < 2 || files.length > 3) {
-          craftPhotosInput.setCustomValidity(
-            "Please upload between 2 and 3 craft photos."
-          );
-        } else {
-          craftPhotosInput.setCustomValidity("");
-        }
-      });
+      // craftPhotosInput.addEventListener("change", () => {
+      //   const files = craftPhotosInput.files;
+      //   if (files.length < 2 || files.length > 3) {
+      //     craftPhotosInput.setCustomValidity(
+      //       "Please upload between 2 and 3 craft photos."
+      //     );
+      //   } else {
+      //     craftPhotosInput.setCustomValidity("");
+      //   }
+      // });
 
-      const { data: lastArtisan } = await supabase
-        .from("artisans_public")
-        .select("artisan_id")
-        .order("artisan_id", { ascending: false })
-        .limit(1)
-        .single();
+      // Helper function to upload a single file
+      async function uploadFile(file, path) {
+        const { data, error: uploadError } = await supabase.storage
+          .from("artisan_files")
+          .upload(path, file, { upsert: true });
 
-      let newId = "ART001";
-      if (lastArtisan && lastArtisan.artisan_id) {
-        // Extract number and increment
-        const lastNum = parseInt(lastArtisan.artisan_id.replace("ART", ""), 10);
-        const nextNum = (lastNum + 1).toString().padStart(3, "0");
-        newId = `ART${nextNum}`;
+        if (uploadError) throw uploadError;
+
+        // Get a PUBLIC URL for the uploaded file
+        const { data: publicData } = supabase.storage
+          .from("artisan_files")
+          .getPublicUrl(path);
+
+        return publicData.publicUrl;
       }
 
       form.addEventListener("submit", async (e) => {
@@ -341,34 +465,76 @@
         setLoading(true);
 
         try {
+          // Get last artisan ID
+          const { data: lastArtisan } = await supabase
+            .from("artisans_public")
+            .select("artisan_id")
+            .order("artisan_id", { ascending: false })
+            .limit(1)
+            .single();
+
+          let newId = "ART001";
+          if (lastArtisan && lastArtisan.artisan_id) {
+            const lastNum = parseInt(
+              lastArtisan.artisan_id.replace("ART", ""),
+              10
+            );
+            const nextNum = (lastNum + 1).toString().padStart(3, "0");
+            newId = `ART${nextNum}`;
+          }
+
           const formData = new FormData(form);
 
-          // Map form fields to table columns
+          // Map form fields
           const name = formData.get("name");
           const place = formData.get("location");
-        //   const artisan_id = crypto.randomUUID();
-          // Insert into table, set other fields as NULL
-          const { error } = await supabase.from("artisans_public").insert([
-            {
-              artisan_id: newId,
-              name,
-              craft: null,
-              place,
-              lineage: null,
-              awards: null,
-              one_liner: null,
-              quote: null,
-              craft_process: null,
-              gi_tag_info: null,
-              verification_notes: null,
-              photo_link: null,
-              workshop_photo_link: null,
-              video_link: null,
-              business_identity: null,
-            },
-          ]);
+          const phone = formData.get("phone") || null;
+          const craft = formData.get("craft") || null;
+          const lineage = formData.get("lineage") || null;
+          const awards = formData.get("awards") || null;
+          const one_liner = formData.get("one_liner") || null;
+          const quote = formData.get("quote") || null;
+          const craft_process = formData.get("craft_process") || null;
+          const gi_tag_info = formData.get("gi_tag_info") || null;
+          const verification_notes = formData.get("verification_notes") || null;
+          const business_identity = formData.get("business_identity") || null; 
 
-          if (error) throw error;
+          // Handle photo upload
+          let photoUrl = null;
+          const photoFile = formData.get("photo_link");
+
+          if (photoFile && photoFile.size > 0) {
+            photoUrl = await uploadFile(
+              photoFile,
+              `${newId}/photo_${photoFile.name}`
+            );
+          }
+
+          // Insert into DB/
+          const { error: insertError } = await supabase
+            .from("artisans_public")
+            .insert([
+              {
+                artisan_id: newId,
+                name,
+                craft,
+                place,
+                lineage,
+                awards,
+                one_liner,
+                quote,
+                craft_process,
+                gi_tag_info,
+                verification_notes,
+                photo_link: photoUrl,
+                workshop_photo_link: null,
+                video_link: null,
+                business_identity: business_identity,
+                phone
+              },
+            ]);
+
+          if (insertError) throw insertError;
 
           showMessage(
             "Submission successful! Your application is under review.",
@@ -383,21 +549,20 @@
         }
       });
 
-      // Helper function to upload a single file
-      async function uploadFile(file, path) {
-        const { data, error } = await supabase.storage
-          .from("artisan_files")
-          .upload(path, file, { upsert: true });
+      // Helper function
+      // async function uploadFile(file, path) {
+      //   const { error } = await supabase.storage
+      //     .from("artisan_files")
+      //     .upload(path, file, { upsert: true });
 
-        if (error) throw error;
+      //   if (error) throw error;
 
-        // Get public URL for the uploaded file
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("artisan_files").getPublicUrl(path);
+      //   const {
+      //     data: { publicUrl },
+      //   } = supabase.storage.from("artisan_files").getPublicUrl(path);
 
-        return publicUrl;
-      }
+      //   return publicUrl;
+      // }
 
       function setLoading(isLoading) {
         submitBtn.disabled = isLoading;

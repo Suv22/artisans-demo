@@ -59,7 +59,7 @@ body {
     position: relative;
     background-image: var(--header-gradient);
     padding: 5rem 1rem 8rem 1rem;
-    text-align: center;
+    text-align: left;
     color: white;
 }
 .header-overlay {
@@ -72,31 +72,52 @@ body {
     z-index: 10;
 }
 .profile-picture {
-    width: 8rem;
-    height: 8rem;
-    margin: 0 auto 1.5rem auto;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: var(--shadow-heritage);
-    ring-offset-color: transparent;
-    border: 4px solid rgba(255, 255, 255, 0.2);
+  width: 170px;           /* change as needed */
+  height:170px;          /* keep square */
+  border-radius: 50%;     /* circle */
+  overflow: hidden;       /* crop overflowing image */
+  display: inline-block;
+  background: #eee;       /* placeholder bg while image loads */
+  flex: 0 0 auto;
 }
-.profile-picture img { width: 100%; height: 100%; object-fit: cover; }
+/* Ensure img covers the container */
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* key: crop and fill */
+  display: block;        /* remove whitespace below img */
+}
 
 .profile-header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
 .header-meta {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
-.header-meta-item { display: flex; align-items: center; gap: 0.5rem; color: rgba(255, 255, 255, 0.9); }
+.header-meta-item { display: flex; align-items: left; gap: 0.5rem; color: rgba(255, 255, 255, 0.9); }
 .header-meta-item svg { width: 1rem; height: 1rem; }
 .header-meta .craft-name { font-size: 1.125rem; font-weight: 500; }
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* responsive */
+  gap: 1.5rem;
+}
+.profile-right {
+  flex: 0 0 180px;
+  text-align: center;
+}
+#qr-code {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
 
-.header-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+.header-badges { display: flex; flex-wrap: wrap; justify-content: left; gap: 0.75rem; }
 .badge {
     display: inline-flex;
     align-items: center;

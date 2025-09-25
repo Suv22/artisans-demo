@@ -41,7 +41,6 @@ h1 {
   margin-left: 6px;
 }
 
-
 h2.card-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -66,7 +65,6 @@ p {
 /* --- Header Section --- */
 .profile-header {
     padding-top: 2rem;
-    /* padding-bottom: 2rem; */
     border-bottom: 2px solid rgb(27, 27, 27);
 }
 
@@ -132,7 +130,7 @@ p {
 .qr-code-container {
     flex-shrink: 0;
     text-align: center;
-    display: flex; /* Changed from none by JS */
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
@@ -155,18 +153,11 @@ p {
     gap: 2.5rem;
 }
 
-@media (max-width: 768px) {
-    .cv-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 .card {
-    /* border: 1px solid var(--border-color); */
     background-color: var(--card-background);
     padding: 1.5rem;
     border-radius: 4px;
-    margin-bottom: 1.5rem; /* Space between cards in the same column */
+    margin-bottom: 1.5rem;
 }
 
 /* --- Specific Section Styles --- */
@@ -178,6 +169,7 @@ p {
     font-style: italic;
     position: relative;
 }
+
 .quote-mark {
     position: absolute;
     left: -10px;
@@ -195,16 +187,19 @@ ul {
 .credentials-list > li:not(:last-child) {
     margin-bottom: 1rem;
 }
+
 .awards-sublist {
     padding-left: 1rem;
     margin-top: 0.5rem;
 }
+
 .awards-sublist li {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: var(--text-secondary);
 }
+
 .awards-sublist svg {
     width: 1em;
     height: 1em;
@@ -212,9 +207,6 @@ ul {
 }
 
 .gi-tag {
-    /* background-color: #f0f0f0; */
-    /* border: 1px solid var(--border-color); */
-    /* padding: 0.5rem 1rem; */
     border-radius: 4px;
     font-weight: 500;
     margin-bottom: 1rem;
@@ -225,20 +217,22 @@ ul {
     color: var(--text-secondary);
 }
 
-
 .business-info li {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
     border-bottom: 1px solid rgb(0, 0, 0);
 }
+
 .business-info li:last-child {
     border-bottom: none;
 }
+
 .business-info span:first-child {
     font-weight: 500;
     color: var(--text-primary);
 }
+
 .business-info span:last-child {
     color: var(--text-secondary);
 }
@@ -248,6 +242,7 @@ ul {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
 }
+
 .gallery-item img {
     width: 100%;
     height: auto;
@@ -256,12 +251,14 @@ ul {
     border-radius: 4px;
     border: 1px solid var(--border-color);
 }
+
 .video-item {
     margin-top: 1rem;
     position: relative;
     padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     height: 0;
 }
+
 .video-item iframe {
     position: absolute;
     top: 0;
@@ -274,16 +271,16 @@ ul {
 .view-more-btn {
   margin-top: 10px;
   padding: 6px 12px;
-  /* background: #007bff; */
   color: rgb(0, 0, 0);
   border: none;
-  /* border-radius: 6px; */
   cursor: pointer;
   font-size: 0.9rem;
 }
+
 .view-more-btn:hover {
   background: #cacaca;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -292,16 +289,80 @@ ul {
 
 .info-btn {
     height: 25px;
-  background-color: #ffffff; /* Blue button */
-  color: rgb(0, 0, 0);
-  border:none;
-  /* padding: 6px 12px; */
-  border-radius: 2px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s ease-in-out;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border:none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease-in-out;
 }
 
 .info-btn:hover {
   background-color: #94d4ff;
+}
+
+
+/*
+====================================
+=== MOBILE RESPONSIVE STYLES ===
+====================================
+*/
+
+@media (max-width: 768px) {
+    
+    /* --- General Layout & Spacing --- */
+    .container {
+        padding: 20px 0.75rem;
+    }
+
+    .cv-grid {
+        grid-template-columns: 1fr; /* Stack columns */
+        gap: 1.5rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+    
+    /* --- Header on Mobile --- */
+    .header-main {
+        flex-direction: column; /* Stack header items vertically */
+        align-items: center;   /* Center them */
+        gap: 0rem;
+        text-align: center;
+    }
+
+    .header-meta {
+        justify-content: center; /* Center the meta items like location/craft */
+        flex-wrap: wrap;         /* Allow them to wrap to a new line */
+    }
+
+    .one-liner {
+        text-align: left; /* Keep quote text left-aligned for readability */
+    }
+
+    .profile-picture-container img {
+        width: 120px;   /* Slightly smaller profile picture */
+        height: 120px;
+    }
+
+    /* --- Typography on Mobile --- */
+    h1 {
+        font-size: 2rem; /* Reduce main heading size */
+    }
+
+    .one-liner {
+        font-size: 1rem;
+    }
+    
+    h2.card-title {
+        font-size: 1.1rem;
+    }
+    
+    /* --- Specific Sections on Mobile --- */
+    .gallery-grid {
+        /* This grid is already responsive, but we can reduce the min size for smaller phones */
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
 }

@@ -1,27 +1,26 @@
-/* style.css */
-
-/* --- Fonts & Root Variables --- */
+/* --- Aesthetic White Admin Theme --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg-color: #fffdf8;
-    --sidebar-bg: #ffffff;
-    --main-bg: #ffffff;
-    --text-primary: #111827;
+    --bg-color: #F8F9FA; /* Soft off-white background */
+    --sidebar-bg: #FFFFFF;
+    --main-bg: #FFFFFF;
+    --text-primary: #2d3748; /* Dark charcoal instead of pure black */
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
-    --accent-color: #4f46e5;
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --accent-color: #2d3748; /* A strong, dark accent */
+    --accent-bg-subtle: #F1F3F5; /* A very subtle gray for hovers */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
     
-    --status-pending-bg: #fef9c3;
-    --status-pending-text: #854d0e;
-    --status-approved-bg: #dcfce7;
+    --status-pending-bg: #FFFBEB;
+    --status-pending-text: #B45309;
+    --status-approved-bg: #F0FDF4;
     --status-approved-text: #166534;
-    --status-rejected-bg: #fee2e2;
-    --status-rejected-text: #991b1b;
+    --status-rejected-bg: #FEF2F2;
+    --status-rejected-text: #991B1B;
 
     --font-family: 'Inter', sans-serif;
-    --radius: 0.5rem;
+    --radius: 0.6rem; /* Slightly softer corners */
 }
 
 /* --- Base & Reset --- */
@@ -78,7 +77,7 @@ body {
 }
 
 .sidebar-nav a:hover {
-    background-color: var(--bg-color);
+    background-color: var(--accent-bg-subtle);
     color: var(--text-primary);
 }
 
@@ -128,6 +127,7 @@ th, td {
 th {
     font-size: 0.75rem;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--text-secondary);
     font-weight: 600;
 }
@@ -142,29 +142,18 @@ tr:last-child td {
 }
 
 .status-badge {
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  font-weight: 500;
-  display: inline-block;
-  transition: 0.2s;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px; /* Pill shape */
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.status-pending {
-    background-color: orange;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-}
-.status-approved {
-    background-color: green;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-}
+.status-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+.status-approved { background-color: var(--status-approved-bg); color: var(--status-approved-text); }
 .status-rejected { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
+
 
 .action-buttons button {
     background: none;
@@ -175,7 +164,7 @@ tr:last-child td {
     color: var(--text-secondary);
     transition: color 0.2s;
 }
-.action-buttons button:hover { color: var(--text-primary); }
+.action-buttons button:hover { color: var(--accent-color); }
 .action-buttons button svg { width: 18px; height: 18px; }
 
 /* --- Modal --- */
@@ -221,6 +210,7 @@ tr:last-child td {
 
 .modal-header h2 { font-size: 1.25rem; }
 .modal-close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); }
+.modal-close-btn:hover { color: var(--accent-color); }
 
 .modal-body { max-height: 60vh; overflow-y: auto; }
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
@@ -255,8 +245,11 @@ tr:last-child td {
 
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
+    body {
+        display: block; /* Remove flex display for mobile */
+    }
     .sidebar {
-        display: none;
+        display: none; /* In a real app, you'd add a hamburger button to toggle this */
     }
     .main-content {
         margin-left: 0;
@@ -266,6 +259,6 @@ tr:last-child td {
     .header h1 {
         font-size: 1.5rem;
     }
-    th, td { padding: 0.75rem; }
+    th, td { padding: 0.75rem; font-size: 0.8rem; }
     .info-grid { grid-template-columns: 1fr; }
 }

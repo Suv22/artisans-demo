@@ -320,11 +320,12 @@
         <div>
           <label for="workshop_photo_link">Workshop Photo Link</label>
           <input
-            type="url"
+            type="file"
             id="workshop_photo_link"
             name="workshop_photo_link"
-            placeholder="Link to workshop photo"
+            accept="image/*"
             class="form-input"
+            multiple
           />
         </div>
 
@@ -335,14 +336,16 @@
             type="url"
             id="video_link"
             name="video_link"
-            placeholder="Link to video"
+            placeholder="Paste YouTube or Vimeo link"
             class="form-input"
           />
         </div>
 
         <!-- Business Identity -->
         <div>
-          <label for="business_identity">Business Identity (Established Year)</label>
+          <label for="business_identity"
+            >Business Identity (Established Year)</label
+          >
           <input
             type="text"
             id="business_identity"
@@ -444,6 +447,20 @@
       //   }
       // });
 
+      // function getEmbedUrl(url) {
+      //   try {
+      //     const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+      //     const match = url.match(ytRegex);
+
+      //     if (match && match[1]) {
+      //       return `https://www.youtube.com/embed/${match[1]}`;
+      //     }
+      //     return url; // fallback if it's already embed or another provider
+      //   } catch {
+      //     return url;
+      //   }
+      // }
+
       // Helper function to upload a single file
       async function uploadFile(file, path) {
         const { data, error: uploadError } = await supabase.storage
@@ -497,7 +514,56 @@
           const craft_process = formData.get("craft_process") || null;
           const gi_tag_info = formData.get("gi_tag_info") || null;
           const verification_notes = formData.get("verification_notes") || null;
-          const business_identity = formData.get("business_identity") || null; 
+          const business_identity = formData.get("business_identity") || null;
+
+          const workshopFilesInput = document.getElementById(
+            "workshop_photo_link"
+          );
+          const workshopFiles = workshopFilesInput.files; // FileList
+          const uploadedWorkshopPhotos = [];
+
+          for (const file of workshopFiles) {
+            const galPhotoUrl = await uploadFile(
+              file,
+              `${newId}/workshop_${file.name}`
+            );
+            uploadedWorkshopPhotos.push(galPhotoUrl);
+          }
+
+          //Video
+          function getEmbedUrl(url) {
+            // YouTube
+            const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+            const ytMatch = url.match(ytRegex);
+            if (ytMatch && ytMatch[1]) {
+              return `https://www.youtube.com/embed/${ytMatch[1]}`;
+            }
+
+            // Vimeo
+            const vimeoRegex = /vimeo\.com\/(\d+)/;
+            const vimeoMatch = url.match(vimeoRegex);
+            if (vimeoMatch && vimeoMatch[1]) {
+              return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+            }
+
+            return url;
+          }
+
+          let video_link = formData.get("video_link") || null;
+          if (video_link) {
+            video_link = getEmbedUrl(video_link);
+          }
+
+          //For upload video from system
+          // const uploadedVideoLinks = [];
+
+          // for (const file of videoFiles) {
+          //   const videoUrl = await uploadFile(
+          //     file,
+          //     `${newId}/videos${file.name}`
+          //   );
+          //   uploadedVideoLinks.push(videoUrl);
+          // }
 
           // Handle photo upload
           let photoUrl = null;
@@ -527,10 +593,10 @@
                 gi_tag_info,
                 verification_notes,
                 photo_link: photoUrl,
-                workshop_photo_link: null,
-                video_link: null,
+                workshop_photo_link: uploadedWorkshopPhotos,
+                video_link: video_link || null,
                 business_identity: business_identity,
-                phone
+                phone,
               },
             ]);
 

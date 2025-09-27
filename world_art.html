@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GI Connect - Crafts & Artisans</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* General Body and Font Styles */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Inter", sans-serif;
+        color: #333;
+        background-color: #fdfdfd;
+      }
+
+      .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 1.5rem; /* Mobile padding */
+        box-sizing: border-box;
+      }
+
+      /* --- MOBILE STYLES --- */
+
+      /* Header */
+      .main-header {
+        display: flex;
+        justify-content: flex-end; /* Align hamburger to the right */
+        align-items: center;
+        width: 100%;
+      }
+
+      .desktop-nav {
+        display: none; /* Hide desktop nav on mobile */
+      }
+
+      /* Hamburger Menu */
+      .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 2rem;
+        height: 1.5rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+      }
+
+      .hamburger-bar {
+        width: 1.7rem;
+        height: 0.1rem;
+        background: #333;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+      }
+
+      /* Mobile Navigation Panel */
+      .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fdfdfd;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 5;
+      }
+
+      .mobile-nav.is-open {
+        transform: translateX(0);
+      }
+
+      .mobile-nav nav {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .mobile-nav a {
+        font-size: 1.5rem;
+        padding: 1rem;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .content-section {
+        flex: 1; /* Take up remaining space */
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      /* --- MAIN CONTENT SECTION --- */
+      .content-section {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .filter-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 3rem;
+        align-items: center;
+      }
+
+      .search-bar {
+        width: 90%;
+      }
+
+      #search-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      #search-input:focus {
+        border-color: #999;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
+
+      .filter-buttons {
+        display: flex;
+        gap: 0.8rem;
+      }
+
+      .filter-btn {
+        background-color: transparent;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+        cursor: pointer;
+        color: #555;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn:hover {
+        background-color: #f5f5f5;
+        border-color: #999;
+      }
+
+      .filter-btn.active {
+        background-color: #333;
+        color: white;
+        border-color: #333;
+      }
+
+      /* --- Artisan Grid --- */
+      /* --- Artisan Grid --- */
+      .artisan-grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(160px, 1fr)
+        ); /* smaller min size for mobile */
+        gap: 1rem;
+        width: 100%; /* take full width on mobile */
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .artisan-card {
+        background-color: #fffef9;
+        border: none;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease-in-out, box-shadow 0.4s ease-in-out;
+        cursor: pointer;
+        border-radius: 6px;
+      }
+
+      .artisan-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      }
+
+      .artisan-card img {
+        width: 100%;
+        height: 180px; /* reduce for mobile */
+        object-fit: cover;
+        display: block;
+        background-color: #f0f0f0;
+      }
+
+      .artisan-card .artisan-info {
+        padding: 0.8rem;
+      }
+
+      .artisan-card .artisan-name {
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: left;
+        color: #333;
+        margin: 0;
+      }
+      .artisan-lineage {
+        font-size: 0.6rem;
+        color: #666;
+        text-align: left;
+        margin: 0.2rem 0;
+      }
+      .artisan-craft {
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-align: left;
+        color: #444;
+        margin: 0.3rem 0 0;
+      }
+      .button-container {
+        text-align: left;
+      }
+
+      .view-btn {
+        display: inline-block;
+        align-items: left;
+        margin-top: 0.5rem;
+        /* padding: 0rem 0.4rem 0rem; */
+        font-size: 0.7rem;
+        color: #1f1f1f;
+        background: transparent;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .arrow {
+        margin-left: 4px;
+        font-size: 12px;
+      }
+
+      /* --- Responsive Adjustments --- */
+      @media (max-width: 768px) {
+        .artisan-grid {
+          grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+          gap: 1rem;
+        }
+        .search-bar {
+          display: none;
+        }
+        .search-bar-mobile {
+          width: 70%;
+          margin-left: auto;
+          padding-right: 50px;
+        }
+        #mobile-search-input {
+          width: 100%;
+          padding: 0.8rem 1rem;
+          border: 1px solid #ccc;
+          border-radius: 50px;
+          font-size: 0.95rem;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #mobile-search-input:focus {
+          box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+          outline: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .artisan-grid {
+          grid-template-columns: repeat(2, 1fr); /* still 2 cols on phones */
+          gap: 0.8rem;
+        }
+        .artisan-card img {
+          height: 140px; /* smaller images */
+        }
+        .artisan-card .artisan-name {
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Footer */
+      .main-footer {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        gap: 1rem;
+        text-align: center;
+        width: 100%;
+        padding-top: 2rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .footer-right {
+        display: flex;
+        flex-wrap: wrap; /* Allow links to wrap */
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .footer-right a {
+        text-decoration: none;
+        color: #666;
+      }
+
+      /* --- DESKTOP STYLES (for screens 768px and wider) --- */
+      @media (min-width: 768px) {
+        .search-bar-mobile {
+          display: none;
+        }
+        .page-container {
+          padding: 2rem 4rem; /* Desktop padding */
+        }
+
+        .main-header {
+          justify-content: space-between;
+        }
+
+        .desktop-nav {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .nav-left,
+        .nav-right {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
+        }
+
+        .desktop-nav a {
+          text-decoration: none;
+          color: #333;
+          font-size: 0.9rem;
+        }
+
+        .hamburger-menu {
+          display: none; /* Hide hamburger on desktop */
+        }
+
+        .cta-button {
+          padding: 1rem 2rem;
+          font-size: 1rem;
+        }
+
+        .main-footer {
+          flex-direction: row; /* Align side-by-side */
+          justify-content: space-between;
+        }
+
+        .footer-right a {
+          margin-left: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-container">
+      <header class="main-header">
+        <div class="desktop-nav">
+          <nav class="nav-left">
+            <a href="#">Crafts</a>
+            <a href="#">Artisan Stories</a>-
+            <a href="#">Verification Standards</a>
+          </nav>
+          <nav class="nav-right">
+            <!-- <a href="register.html">Register Artisan</a> -->
+            <a href="#">Our Journey</a>
+            <a href="register.html">Get Verified</a>
+          </nav>
+        </div>
+        <div class="search-bar-mobile">
+          <input type="text" id="mobile-search-input" placeholder="Search..." />
+        </div>
+        <button
+          class="hamburger-menu"
+          id="hamburger-menu"
+          aria-label="Open navigation menu"
+        >
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </header>
+
+      <div class="mobile-nav" id="mobile-nav">
+        <nav>
+          <!-- <a href="register.html">Register Artisan</a> -->
+          <a href="#">Crafts</a>
+          <a href="#">Artisan Stories</a>
+          <a href="#">Verification Standards</a>
+          <a href="#">Our Journey</a>
+          <a href="register.html">Get Verified</a>
+        </nav>
+      </div>
+
+      <main class="content-section">
+        <div class="filter-controls">
+          <div class="search-bar">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search craft, art or region..."
+            />
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+              All Crafts
+            </button>
+            <button class="filter-btn" data-filter="regions">Regions</button>
+          </div>
+        </div>
+
+        <div class="artisan-grid" id="artisan-grid">
+          <div class="loading-placeholder">Loading artisans...</div>
+        </div>
+      </main>
+
+      <footer class="main-footer">
+        <div class="footer-left">
+          &copy; GI Connect &middot; 2025 Authorship. Craft. Trust.
+        </div>
+        <div class="footer-right">
+          <a href="#">Contact us</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module">
+      import { supabase } from "./supabase.js";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const mobileNav = document.getElementById("mobile-nav");
+
+        hamburgerMenu.addEventListener("click", () => {
+          // Toggle the 'is-open' class on the mobile navigation menu
+          mobileNav.classList.toggle("is-open");
+        });
+        // ----------------------------------------------------------------
+        // --- STEP 1: Connect to your Supabase project (replace with your details) ---
+        // ----------------------------------------------------------------
+
+        // const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        // const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        // const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- Using placeholder data for demonstration.
+        // --- To use Supabase, uncomment the lines above and the fetchArtisans() call at the bottom.
+        const placeholderArtisans = [
+          {
+            artisan_id: 1,
+            name: "Radha Devi",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Radha+D.",
+          },
+          {
+            artisan_id: 2,
+            name: "Suresh Kumar",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Suresh+K.",
+          },
+          {
+            artisan_id: 3,
+            name: "Meena Singh",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Meena+S.",
+          },
+          {
+            artisan_id: 4,
+            name: "Priya Sharma",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Priya+S.",
+          },
+          {
+            artisan_id: 5,
+            name: "Rajesh Gupta",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Rajesh+G.",
+          },
+          {
+            artisan_id: 6,
+            name: "Anjali Rao",
+            photo_url:
+              "https://via.placeholder.com/220/EAEAEA/333333?text=Anjali+R.",
+          },
+        ];
+
+        /**
+         * Renders artisan data into a grid of cards.
+         * This is the new function to display photos and names.
+         * @param {Array} artisans - An array of artisan objects.
+         */
+        function renderArtisanGrid(artisans) {
+          const grid = document.getElementById("artisan-grid");
+          if (!grid) return;
+
+          grid.innerHTML = ""; // Clear existing content or loading message
+
+          if (artisans.length === 0) {
+            grid.innerHTML = `<p class="loading-placeholder">No artisans found.</p>`;
+            return;
+          }
+
+          artisans.forEach((artisan) => {
+            const card = document.createElement("div");
+            card.className = "artisan-card";
+
+            // Set the link for the entire card
+            card.onclick = () => {
+              // You can link to a detailed artisan page like in your original code
+              // window.location.href = `artisan.html?id=${artisan.artisan_id}`;
+              console.log(
+                `Clicked on artisan ID: ${artisan.artisan_id}, ${artisan.photo_url}`
+              ); // For demo purposes
+            };
+
+            card.innerHTML = `
+                <img src="${
+                  artisan.photo_url ||
+                  "https://via.placeholder.com/220/FAFAFA/888888?text=No+Image"
+                }" alt="Photo of ${artisan.name}">
+                <div class="artisan-info">
+                    <h3 class="artisan-name">${artisan.name}</h3>
+                    <h2 class="artisan-craft">${artisan.craft}</h2>
+                    <h2 class="artisan-lineage">${artisan.lineage}</h2>
+                    <div class="button-container"><a href="artisan.html?id=${
+                      artisan.artisan_id
+                    }" class="view-btn">
+                    View Profile <span class="arrow">►</span>
+                </a></div>
+                </div>
+            `;
+            grid.appendChild(card);
+          });
+        }
+
+        /**
+         * Fetches artisans from Supabase.
+         * This is your original logic, adapted to get public photo URLs.
+         */
+        async function fetchArtisans() {
+          // Ensure the supabase client is available
+          if (typeof supabase === "undefined") {
+            console.error(
+              "Supabase client is not initialized. Please check your setup."
+            );
+            renderArtisanGrid([]); // Render an empty state
+            return;
+          }
+
+          // Fetch all public artisans
+          const { data, error } = await supabase
+            .from("artisans_public")
+            .select("artisan_id, name, photo_link,lineage,craft");
+
+          if (error) {
+            console.error("Error fetching artisans:", error);
+            // You can show an error message on the page
+            document.getElementById(
+              "artisan-grid"
+            ).innerHTML = `<p class="loading-placeholder">Failed to load data.</p>`;
+            return;
+          }
+
+          // For each artisan, get the public URL for their photo
+          const enrichedData = data.map((artisan) => {
+            let photoUrl = null;
+            if (artisan.photo_link) {
+              // Check if a photo path exists
+              const { data: urlData } = supabase.storage
+                .from("artisan_files") // Your storage bucket
+                .getPublicUrl(artisan.photo_link);
+              photoUrl = artisan.photo_link || null;
+            }
+
+            return {
+              ...artisan,
+              photo_url: photoUrl,
+            };
+          });
+
+          renderArtisanGrid(enrichedData);
+        }
+
+        // --- Initial Load ---
+        // Use the placeholder data immediately
+        // renderArtisanGrid(placeholderArtisans);
+
+        // To use real data from Supabase, comment out the line above and uncomment the line below
+        fetchArtisans();
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 // admin.js
-import { supabase } from "./supabase.js";
+import { supabase } from "./supabaseClient.js";
 
 // DOM Elements
 const tableBody = document.getElementById("artisan-table-body");

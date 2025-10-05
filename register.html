@@ -236,7 +236,6 @@
         .form-grid {
           grid-template-columns: 1fr 1fr;
         }
-        
       }
     </style>
   </head>
@@ -426,7 +425,6 @@
               type="file"
               id="aadhaar_front"
               name="aadhaar_front"
-              required
               accept="image/*"
               class="form-file-input"
             />
@@ -437,7 +435,6 @@
               type="file"
               id="aadhaar_back"
               name="aadhaar_back"
-              required
               accept="image/*"
               class="form-file-input"
             />
@@ -468,38 +465,11 @@
     </div>
 
     <script type="module">
-      import { supabase } from "./supabase.js";
+      import { supabase } from "./supabaseClient.js";
 
       const form = document.getElementById("artisanForm");
       const submitBtn = document.getElementById("submitBtn");
       const messageDiv = document.getElementById("message");
-      // const craftPhotosInput = document.getElementById("craft_photos");
-
-      // Simple client-side validation for file count
-      // craftPhotosInput.addEventListener("change", () => {
-      //   const files = craftPhotosInput.files;
-      //   if (files.length < 2 || files.length > 3) {
-      //     craftPhotosInput.setCustomValidity(
-      //       "Please upload between 2 and 3 craft photos."
-      //     );
-      //   } else {
-      //     craftPhotosInput.setCustomValidity("");
-      //   }
-      // });
-
-      // function getEmbedUrl(url) {
-      //   try {
-      //     const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
-      //     const match = url.match(ytRegex);
-
-      //     if (match && match[1]) {
-      //       return `https://www.youtube.com/embed/${match[1]}`;
-      //     }
-      //     return url; // fallback if it's already embed or another provider
-      //   } catch {
-      //     return url;
-      //   }
-      // }
 
       // Helper function to upload a single file
       async function uploadFile(file, path) {
@@ -522,7 +492,39 @@
         setLoading(true);
 
         try {
-          // Get last artisan ID
+          // --- STEP 1: Collect Form Data ---
+          const formData = new FormData(form);
+
+          const name = formData.get("name")?.trim();
+          const place = formData.get("location")?.trim();
+          const phone = formData.get("phone")?.trim();
+          const craft = formData.get("craft")?.trim();
+          const lineage = formData.get("lineage")?.trim();
+          const awards = formData.get("awards")?.trim();
+          const one_liner = formData.get("one_liner")?.trim();
+          const quote = formData.get("quote")?.trim();
+          const craft_process = formData.get("craft_process")?.trim();
+          const gi_tag_info = formData.get("gi_tag_info")?.trim();
+          const verification_notes = formData.get("verification_notes")?.trim();
+          const business_identity = formData.get("business_identity")?.trim();
+
+          // --- STEP 2: Validate required fields ---
+          if (!name || !place || !craft) {
+            showMessage(
+              "Please fill all mandatory fields (Name, Place, Craft).",
+              "error"
+            );
+            setLoading(false);
+            return;
+          }
+
+          if (phone && !/^\d{10}$/.test(phone)) {
+            showMessage("Please enter a valid 10-digit phone number.", "error");
+            setLoading(false);
+            return;
+          }
+
+          // --- STEP 3: Get Last Artisan ID ---
           const { data: lastArtisan } = await supabase
             .from("artisans_public")
             .select("artisan_id")
@@ -540,26 +542,11 @@
             newId = `ART${nextNum}`;
           }
 
-          const formData = new FormData(form);
-
-          // Map form fields
-          const name = formData.get("name");
-          const place = formData.get("location");
-          const phone = formData.get("phone") || null;
-          const craft = formData.get("craft") || null;
-          const lineage = formData.get("lineage") || null;
-          const awards = formData.get("awards") || null;
-          const one_liner = formData.get("one_liner") || null;
-          const quote = formData.get("quote") || null;
-          const craft_process = formData.get("craft_process") || null;
-          const gi_tag_info = formData.get("gi_tag_info") || null;
-          const verification_notes = formData.get("verification_notes") || null;
-          const business_identity = formData.get("business_identity") || null;
-
+          // --- STEP 4: Only Now Upload Files ---
           const workshopFilesInput = document.getElementById(
             "workshop_photo_link"
           );
-          const workshopFiles = workshopFilesInput.files; // FileList
+          const workshopFiles = workshopFilesInput.files;
           const uploadedWorkshopPhotos = [];
 
           for (const file of workshopFiles) {
@@ -570,45 +557,25 @@
             uploadedWorkshopPhotos.push(galPhotoUrl);
           }
 
-          //Video
+          // --- STEP 5: Process Video URL ---
           function getEmbedUrl(url) {
-            // YouTube
             const ytRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
-            const ytMatch = url.match(ytRegex);
-            if (ytMatch && ytMatch[1]) {
-              return `https://www.youtube.com/embed/${ytMatch[1]}`;
-            }
-
-            // Vimeo
             const vimeoRegex = /vimeo\.com\/(\d+)/;
+            const ytMatch = url.match(ytRegex);
             const vimeoMatch = url.match(vimeoRegex);
-            if (vimeoMatch && vimeoMatch[1]) {
+            if (ytMatch && ytMatch[1])
+              return `https://www.youtube.com/embed/${ytMatch[1]}`;
+            if (vimeoMatch && vimeoMatch[1])
               return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-            }
-
             return url;
           }
 
-          let video_link = formData.get("video_link") || null;
-          if (video_link) {
-            video_link = getEmbedUrl(video_link);
-          }
+          let video_link = formData.get("video_link")?.trim() || null;
+          if (video_link) video_link = getEmbedUrl(video_link);
 
-          //For upload video from system
-          // const uploadedVideoLinks = [];
-
-          // for (const file of videoFiles) {
-          //   const videoUrl = await uploadFile(
-          //     file,
-          //     `${newId}/videos${file.name}`
-          //   );
-          //   uploadedVideoLinks.push(videoUrl);
-          // }
-
-          // Handle photo upload
+          // --- STEP 6: Upload Profile Photo ---
           let photoUrl = null;
           const photoFile = formData.get("photo_link");
-
           if (photoFile && photoFile.size > 0) {
             photoUrl = await uploadFile(
               photoFile,
@@ -616,7 +583,7 @@
             );
           }
 
-          // Insert into DB/
+          // --- STEP 7: Insert into Database ---
           const { error: insertError } = await supabase
             .from("artisans_public")
             .insert([
@@ -634,8 +601,8 @@
                 verification_notes,
                 photo_link: photoUrl,
                 workshop_photo_link: uploadedWorkshopPhotos,
-                video_link: video_link || null,
-                business_identity: business_identity,
+                video_link,
+                business_identity,
                 phone,
               },
             ]);

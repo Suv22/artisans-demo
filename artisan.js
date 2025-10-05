@@ -1,5 +1,5 @@
 // artisan.js
-import { supabase } from "./supabase.js";
+import { supabase } from "./supabaseClient.js";
 
 // DOM Elements
 const profileContainer = document.getElementById("profile-container");
@@ -299,8 +299,7 @@ async function renderProfile(artisan, error) {
 
 /**
  * Main function to get ID from URL and fetch data.
- */
-async function main() {
+ */async function main() {
   const params = new URLSearchParams(window.location.search);
   const artisanId = params.get("id");
 
@@ -318,7 +317,25 @@ async function main() {
 
     if (error) throw error;
 
+    // ✅ BEST PLACE: If there was no error and we found the artisan (data is not null)...
+    if (data) {
+      // <-- START: Add the scan tracking code here -->
+      console.log(`Logging scan for artisan: ${artisanId}`);
+      
+      // We call the function but don't wait for it to finish,
+      // so the page loads quickly for the user.
+      supabase.functions.invoke('increment-scan-count', {
+        body: { artisan_id: artisanId }
+      })
+      .then(response => {
+        if (response.error) console.error('Scan log failed:', response.error);
+        else console.log('Scan logged successfully:', response.data.message);
+      });
+      // <-- END: Scan tracking code -->
+    }
+
     renderProfile(data, null);
+
   } catch (err) {
     console.error("Failed to fetch artisan profile:", err);
     renderProfile(null, err);

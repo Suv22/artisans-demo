@@ -246,7 +246,7 @@ async function renderProfile(artisan, error) {
 
     const qrCodeContainer = document.getElementById("qr-code");
     new QRCode(qrCodeContainer, {
-      text: `https://suv22.github.io/artisans-demo/artisan.html?id=${artisan.artisan_id}`,
+      text: `https://suv22.github.io/artisans-demo/artisan.html?id=${artisan.artisan_id}&source=qr`,
       width: 120,
       height: 120,
       colorDark: "#000000",
@@ -299,13 +299,34 @@ async function renderProfile(artisan, error) {
 
 /**
  * Main function to get ID from URL and fetch data.
- */async function main() {
+ */ async function main() {
   const params = new URLSearchParams(window.location.search);
   const artisanId = params.get("id");
+  const source = params.get("source"); // <-- Get the new 'source' parameter
 
   if (!artisanId) {
     renderProfile(null, new Error("No artisan ID provided in URL."));
     return;
+  }
+  // ✅ The new logic starts here
+  // Only log a scan if the source is 'qr'
+  if (source === "qr") {
+    console.log(`QR scan detected for artisan: ${artisanId}. Logging scan...`);
+
+    // Call the function to log the scan
+    supabase.functions
+      .invoke("increment-scan-count", {
+        body: { artisan_id: artisanId },
+      })
+      .then((response) => {
+        if (response.error) console.error("Scan log failed:", response.error);
+        else console.log("Scan logged successfully:", response.data.message);
+      });
+
+    // Now, remove the 'source=qr' from the URL to prevent re-counting on refresh
+    params.delete("source");
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    history.replaceState(null, "", newUrl); // This updates the URL without a page reload
   }
 
   try {
@@ -321,21 +342,21 @@ async function renderProfile(artisan, error) {
     if (data) {
       // <-- START: Add the scan tracking code here -->
       console.log(`Logging scan for artisan: ${artisanId}`);
-      
+
       // We call the function but don't wait for it to finish,
       // so the page loads quickly for the user.
-      supabase.functions.invoke('increment-scan-count', {
-        body: { artisan_id: artisanId }
-      })
-      .then(response => {
-        if (response.error) console.error('Scan log failed:', response.error);
-        else console.log('Scan logged successfully:', response.data.message);
-      });
+      supabase.functions
+        .invoke("increment-scan-count", {
+          body: { artisan_id: artisanId },
+        })
+        .then((response) => {
+          if (response.error) console.error("Scan log failed:", response.error);
+          else console.log("Scan logged successfully:", response.data.message);
+        });
       // <-- END: Scan tracking code -->
     }
 
     renderProfile(data, null);
-
   } catch (err) {
     console.error("Failed to fetch artisan profile:", err);
     renderProfile(null, err);

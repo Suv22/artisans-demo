@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GI Connect - Crafts & Artisans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+    /* === 1. Theme Variables & Basic Setup === */
+    :root {
+        --bg-color: #f4f1ed;
+        --card-bg-color: #ffffff;
+        --text-primary: #333;
+        --text-secondary: #333333;
+        --accent-color: #000000;
+        --border-color: #dcd6cd;
+        --font-serif: "Inter", sans-serif; /* Kept as Inter per your request */
+        --font-sans: "Inter", sans-serif;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    /* === 2. Main Layout & Containers === */
+    .page-frame {
+        padding: 1.5rem;
+    }
+
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background-color: var(--card-bg-color);
+        padding: 2rem 3rem;
+    }
+
+    .main-content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+    }
+
+    /* === 3. Header & Navigation === */
+    .main-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo {
+        font-family: var(--font-serif);
+        font-size: 1.75rem; /* Adjusted for Inter font */
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--text-primary);
+    }
+
+    .main-nav {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .main-nav a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-primary);
+    }
+
+    /* === 4. Hero Section === */
+    .hero .breadcrumb {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+        font-family:"Inter", sans-serif;
+        font-size: 3.5rem; /* Adjusted for balance */
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .hero .description {
+        max-width: 45ch;
+        margin: 1.5rem 0 2rem;
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+
+    .hero-image-container {
+        margin-top: 2.5rem;
+    }
+
+    .hero-image-container img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        background-color: #ddd;
+    }
+
+    /* === 5. Step-by-Process Section === */
+    .process-steps {
+        margin-top: 2rem;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+        /* padding-bottom: 1rem; */
+        margin-bottom: 2.5rem;
+    }
+
+    .section-header h2 {
+        font-family: var(--font-serif);
+        font-size: 1.75rem; /* Adjusted for Inter font */
+        font-weight: 600;
+    }
+
+    .process-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem 2rem;
+    }
+
+    .step-card {
+        position: relative;
+        padding: 1.5rem;
+        background-color: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .step-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-card::before {
+        content: attr(data-step);
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        background-color: var(--accent-color);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .step-card h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+        line-height: 1.3;
+    }
+
+    .step-card ul {
+        list-style-type: disc;
+        padding-left: 1.2rem;
+        margin: 0;
+    }
+
+    .step-card li {
+        margin-bottom: 0.4rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .step-card .duration {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--accent-color);
+    }
+
+    /* === 6. Sidebar === */
+    .sidebar-card {
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .sidebar-card h3 {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .sidebar-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    .materials-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem 1.5rem;
+        list-style: none;
+        padding-left: 0;
+        margin-top: 1rem;
+    }
+
+    .materials-list li {
+        display: flex;
+        align-items: center;
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .card-content-split {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .card-content-split img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        background-color: #ddd;
+    }
+
+    .sidebar-card.minimal {
+        border: none;
+        padding: 1.5rem 0;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-image-container img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background-color: #ddd;
+    }
+
+    .video-section {
+        margin-bottom: 2rem;
+    }
+
+    .video-section iframe {
+        width: 100%;
+        height: 200px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    /* === 7. Responsive Media Queries === */
+    @media (max-width: 1200px) {
+        .process-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .main-content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        /* General Layout */
+        .page-frame {
+            padding: 0.5rem;
+        }
+        .page-container {
+            padding: 1.5rem 1rem;
+        }
+
+        /* Header */
+        .main-header {
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .main-nav {
+            gap: 1rem 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Hero Section */
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        .hero .description {
+            max-width: 100%;
+            font-size: 0.95rem;
+        }
+        .hero-image-container img {
+            height: 250px;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            margin-top: 3rem;
+        }
+        .process-grid {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            padding-left: 20px;
+            padding-right: 5px;
+        }
+        .step-card::before {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+            top: -16px;
+            left: -16px;
+        }
+        .step-card h4 {
+            font-size: 1.05rem;
+        }
+
+        /* Sidebar */
+        .sidebar-card {
+            padding: 1.25rem;
+        }
+        .sidebar-card h3 {
+            font-size: 1.3rem;
+        }
+        .card-content-split img {
+            width: 80px;
+            height: 80px;
+        }
+        .materials-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+  </head>
+  <body>
+    <div class="page-frame">
+      <div class="page-container">
+        <header class="main-header"></header>
+
+        <div class="main-content-grid">
+          <main class="main-content">
+            <section class="hero">
+              <p class="breadcrumb" id="origin-region">Loading...</p>
+              <h1 id="craft-name">Loading Craft...</h1>
+              <p class="description" id="craft-description">
+                Please wait while we load the details for this beautiful craft.
+              </p>
+              <div class="hero-image-container">
+                <img id="hero-image" src="" alt="Main craft image" />
+              </div>
+            </section>
+            <section class="process-steps">
+              <div class="section-header">
+                <h2>Step-by Process</h2>
+              </div>
+              <div class="process-grid" id="process-grid"></div>
+            </section>
+          </main>
+
+          <aside class="sidebar-content">
+            <div class="sidebar-card">
+              <h3>Material Used</h3>
+              <div class="material-gallery" id="materials-gallery"></div>
+            </div>
+            <div class="sidebar-card">
+              <h3>Time Required to Make One Piece</h3>
+              <div class="card-content-split">
+                <p id="craft-time">Loading...</p>
+              </div>
+            </div>
+            <div
+              class="sidebar-card video-section"
+              id="video-section"
+              style="display: none"
+            >
+              <h3>Craft in Motion</h3>
+              <iframe
+                id="craft-video"
+                title="Craft Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="sidebar-card minimal">
+              <h3>History</h3>
+              <p id="craft-history">Loading...</p>
+            </div>
+            <div class="sidebar-card minimal">
+              <h3>Impact Today</h3>
+              <p id="craft-impact">Loading...</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { supabase } from "./supabaseClient.js";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        async function loadCraftProcess() {
+          const params = new URLSearchParams(window.location.search);
+          const craftId = params.get("id");
+
+          if (!craftId) {
+            document.body.innerHTML =
+              "<h1>Error: No Craft ID Provided</h1><p>Please access this page with a valid ID.</p>";
+            return;
+          }
+
+          try {
+            const { data, error } = await supabase
+              .from("crafts")
+              .select(
+                "name, origin_region, description, history, process_steps, materials_used, time_required, impact_today, hero_img, images, video_url"
+              )
+              .eq("id", craftId)
+              .single();
+
+            if (error) throw error;
+
+            if (data) {
+              // --- Populate Text Content (Always show, with fallbacks) ---
+              document.getElementById("craft-name").textContent =
+                data.name || "Untitled Craft";
+              document.getElementById("origin-region").textContent =
+                data.origin_region || "Unknown Origin";
+              document.getElementById("craft-description").textContent =
+                data.description || "";
+              document.getElementById("craft-history").textContent =
+                data.history || "No history available.";
+              document.getElementById("craft-time").textContent =
+                data.time_required || "N/A";
+              document.getElementById("craft-impact").textContent =
+                data.impact_today || "Information coming soon.";
+
+              // --- Conditionally Populate Images ---
+              document.getElementById("hero-image").src = data.hero_img || "";
+              // if (data.images) {
+              //   document.getElementById("hero-image").src =
+              //     data.images.hero || "";
+              //   document.getElementById("time-image").src =
+              //     data.images.time || "";
+              //   document.getElementById("impact-image").src =
+              //     data.images.impact || "";
+              // }
+
+              // --- Conditionally Populate Process Steps Grid ---
+              // --- Process Steps Rendering ---
+              const processGrid = document.getElementById("process-grid");
+
+              let steps = [];
+              try {
+                // Handle JSON string or direct array
+                steps =
+                  typeof data.process_steps === "string"
+                    ? JSON.parse(data.process_steps)
+                    : data.process_steps;
+              } catch (e) {
+                console.warn("Failed to parse process_steps:", e);
+              }
+
+              if (
+                data.process_steps &&
+                Array.isArray(data.process_steps) &&
+                data.process_steps.length > 0
+              ) {
+                processGrid.innerHTML = data.process_steps
+                  .map((step, index) => {
+                    // If it's a simple string (like "Design creation"), render directly
+                    if (typeof step === "string") {
+                      return `
+          <div class="step-card" data-step="${index + 1}">
+            <ul><li>${step}</li></ul>
+          </div>
+        `;
+                    }
+                    // Else, if it’s an object with structured fields
+                    return `
+        <div class="step-card" data-step="${step.number || index + 1}">
+            <h4>${step.title || `Step ${index + 1}`}</h4>
+            <ul>
+                ${(step.details || [])
+                  .map((detail) => `<li>${detail}</li>`)
+                  .join("")}
+            </ul>
+            <p class="duration">${step.duration || ""}</p>
+        </div>
+      `;
+                  })
+                  .join("");
+              } else {
+                document.querySelector(".process-steps").innerHTML = `
+    <div class="section-header"><h2>Crafting Process</h2></div>
+    <p style="color: var(--text-secondary);">The crafting steps for this art are not yet documented.</p>
+  `;
+              }
+
+              // --- Conditionally Populate Materials Gallery ---
+              const materialsGallery =
+                document.getElementById("materials-gallery");
+
+              if (
+                data.materials_used &&
+                typeof data.materials_used === "string"
+              ) {
+                // 1. Remove the curly braces {} from the string
+                const cleanString = data.materials_used.replace(/[{}]/g, "");
+
+                // 2. Split the string by commas into an array and trim any extra spaces
+                const materialsArray = cleanString
+                  .split(",")
+                  .map((item) => item.trim());
+
+                // 3. Check if the array is not empty
+                if (materialsArray.length > 0) {
+                  // 4. Create an HTML unordered list (<ul>) with list items (<li>)
+                  // This is the new code with an SVG icon included
+                  materialsGallery.innerHTML = `
+    <ul class="materials-list">
+        ${materialsArray
+          .map(
+            (material) => `
+            <li>
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.75rem; flex-shrink: 0;">
+                    <circle cx="6" cy="6" r="3" fill="currentColor"/>
+                </svg>
+                <span>${material}</span>
+            </li>
+        `
+          )
+          .join("")}
+    </ul>
+`;
+                } else {
+                  materialsGallery.closest(".sidebar-card").style.display =
+                    "none";
+                }
+              } else {
+                // If there are no materials, hide the whole card
+                materialsGallery.closest(".sidebar-card").style.display =
+                  "none";
+              }
+
+              // --- Conditionally Populate Video ---
+              const videoSection = document.getElementById("video-section");
+              if (data.video_url && videoSection) {
+                videoSection.style.display = "block";
+                document.getElementById("craft-video").src = data.video_url;
+              }
+            } else {
+              document.body.innerHTML = `<h1>Craft Not Found</h1><p>The craft with the specified ID could not be found.</p>`;
+            }
+          } catch (error) {
+            console.error("Error loading craft data:", error);
+            document.body.innerHTML = `<h1>Error Loading Craft</h1><p>${error.message}</p>`;
+          }
+        }
+        loadCraftProcess();
+      });
+    </script>
+    <script>
+      feather.replace(); // To render icons
+    </script>
+  </body>
+</html>

@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artisan Verification Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
       /* === Aesthetic White Theme === */
@@ -268,26 +274,62 @@
             class="form-input"
           />
         </div>
+        <!-- <div>
+          <label for="craft">Craft</label>
+          <select id="craft" name="craft_id" class="form-input" required>
+            <option value="">-- Select Craft --</option>
+            <option value="1">Pottery</option>
+            <option value="2">Weaving</option>
+            <option value="3">Woodwork</option>
+            <option value="4">Painting</option>
+            <option value="5">Jewelry</option>
+          </select>
+        </div> -->
         <div>
           <label for="craft">Craft</label>
+          <select id="craft" name="craft_id" class="form-input" required>
+            <option value="">-- Select Craft --</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="experience">Years of Experience</label>
           <input
-            type="text"
-            id="craft"
-            name="craft"
-            required
+            type="number"
+            id="experience"
+            name="experience"
             class="form-input"
+            placeholder="e.g., 5"
+            min="0"
           />
         </div>
         <div>
-          <label for="awards">Awards</label>
+          <label for="materials">Materials Used</label>
           <input
             type="text"
-            id="awards"
-            name="awards"
-            placeholder="e.g., National Award, State Award"
+            id="materials"
+            name="materials"
+            placeholder="e.g., Clay, Natural dyes, Cotton threads, Brass, Wood"
             class="form-input"
+            required
           />
         </div>
+
+        <div>
+          <label for="awards">Awards</label>
+          <select id="awards" name="awards" class="form-input" multiple>
+            <option value="">-- Select Award --</option>
+            <option value="State Award">State Award</option>
+            <option value="National Award">National Award</option>
+            <option value="National Merit Certificate">
+              National Merit Certificate
+            </option>
+            <option value="Hastakala Award">Hastakala Award</option>
+            <option value="Shilp Guru Award">Shilp Guru Award</option>
+            <option value="GI Product">GI Product</option>
+          </select>
+        </div>
+
         <div>
           <label for="one_liner">One Liner</label>
           <input
@@ -307,17 +349,6 @@
             placeholder="Inspiring quote by the artisan"
             class="form-input"
           />
-        </div>
-
-        <!-- Craft Process -->
-        <div>
-          <label for="craft_process">Craft Process</label>
-          <textarea
-            id="craft_process"
-            name="craft_process"
-            placeholder="Describe the craft making process"
-            class="form-input"
-          ></textarea>
         </div>
 
         <!-- GI Tag Info -->
@@ -369,7 +400,7 @@
         </div>
 
         <!-- Video Link -->
-        <div>
+        <!-- <div>
           <label for="video_link">Video Link</label>
           <input
             type="url"
@@ -378,7 +409,7 @@
             placeholder="Paste YouTube or Vimeo link"
             class="form-input"
           />
-        </div>
+        </div> -->
 
         <!-- Business Identity -->
         <div>
@@ -440,7 +471,7 @@
             />
           </div>
         </div>
-        <div>
+        <!-- <div>
           <label for="craft_photos">Craft Photos (min 2, max 3)</label>
           <input
             type="file"
@@ -451,7 +482,7 @@
             accept="image/*"
             class="form-file-input"
           />
-        </div>
+        </div> -->
 
         <button type="submit" id="submitBtn" class="submit-btn">
           Submit for Verification
@@ -470,7 +501,39 @@
       const form = document.getElementById("artisanForm");
       const submitBtn = document.getElementById("submitBtn");
       const messageDiv = document.getElementById("message");
+      let craftsList = [];
 
+      async function loadCrafts() {
+        const { data: crafts, error } = await supabase
+          .from("crafts")
+          .select("id, name")
+          .order("name", { ascending: true });
+
+        console.log("Crafts fetched:", crafts, "Error:", error); // <<<< add this
+
+        if (error) {
+          console.error("Error fetching crafts:", error);
+          return;
+        }
+        craftsList = crafts; // Store globally if needed elsewhere
+
+        const select = document.getElementById("craft");
+        crafts.forEach((craft) => {
+          const option = document.createElement("option");
+          option.value = craft.id;
+          option.textContent = craft.name;
+          select.appendChild(option);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", loadCrafts);
+
+      $(document).ready(function () {
+        $("#awards").select2({
+          placeholder: "-- Select Awards --",
+          closeOnSelect: false,
+        });
+      });
       // Helper function to upload a single file
       async function uploadFile(file, path) {
         const { data, error: uploadError } = await supabase.storage
@@ -486,6 +549,10 @@
 
         return publicData.publicUrl;
       }
+      function getCraftNameById(id) {
+        const craft = craftsList.find((c) => c.id === id);
+        return craft ? craft.name : null;
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -498,22 +565,24 @@
           const name = formData.get("name")?.trim();
           const place = formData.get("location")?.trim();
           const phone = formData.get("phone")?.trim();
-          const craft = formData.get("craft")?.trim();
+          // const craft = formData.get("craft")?.trim();
+          const craft_id = formData.get("craft_id");
+          const craft_name = getCraftNameById(craft_id);
+          console.log("Selected craft ID:", craft_id);
+          const experience = formData.get("experience")?.trim();
+          const materials = formData.get("materials")?.trim();
           const lineage = formData.get("lineage")?.trim();
-          const awards = formData.get("awards")?.trim();
+          const awards = formData.getAll("awards");
           const one_liner = formData.get("one_liner")?.trim();
           const quote = formData.get("quote")?.trim();
-          const craft_process = formData.get("craft_process")?.trim();
+          // const craft_process = formData.get("craft_process")?.trim();
           const gi_tag_info = formData.get("gi_tag_info")?.trim();
           const verification_notes = formData.get("verification_notes")?.trim();
           const business_identity = formData.get("business_identity")?.trim();
 
           // --- STEP 2: Validate required fields ---
           if (!name || !place || !craft) {
-            showMessage(
-              "Please fill all mandatory fields (Name, Place, Craft).",
-              "error"
-            );
+            showMessage("Please fill all mandatory fields..", "error");
             setLoading(false);
             return;
           }
@@ -590,13 +659,16 @@
               {
                 artisan_id: newId,
                 name,
-                craft,
+                craft: craft_name,
+                craft_id: craft_id,
+                yr_experience: experience,
+                materials,
                 place,
                 lineage,
-                awards,
+                awards: awards.join(", "),
                 one_liner,
                 quote,
-                craft_process,
+                // craft_process,
                 gi_tag_info,
                 verification_notes,
                 photo_link: photoUrl,

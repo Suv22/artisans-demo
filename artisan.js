@@ -63,13 +63,13 @@
                 <blockquote class="quote-block"><span class="quote-mark">“</span>${artisan.quote}</blockquote>
               </section>` : ""}
 
-            ${artisan.craft?.description ? `
+            ${artisan.craft?.one_liner ? `
               <section class="card">
                 <div class="card-header">
                   <h2 class="card-title">The Crafting Process</h2>
                   <button class="info-btn" id="know-more-btn" data-craft-id="${artisan.craft_id}">Know More</button>
                 </div>
-                <p>${artisan.craft.description}</p>
+                <p>${artisan.craft.one_liner}</p>
               </section>` : ""}
 
             ${workshop_photos.length > 0 || artisan.video_link ? `
@@ -179,7 +179,7 @@
     try {
       const { data, error } = await supabase
         .from("artisans_public")
-        .select(`*, craft:craft_id (name, description)`)
+        .select(`*, craft:craft_id (name, one_liner)`)
         .eq("artisan_id", artisanId)
         .maybeSingle();
 

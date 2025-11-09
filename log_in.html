@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* General Body and Reset */
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #fdfdfd; /* Light grey background */
+        color: #333;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Login Container for Centering */
+      .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+      }
+
+      /* Login Card Styling */
+      .login-card {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 12px rgba(0, 0, 0, 0.04); /* Soft, prominent shadow */
+        text-align: center;
+        width: 100%;
+        max-width: 400px; /* Max width for the card */
+        box-sizing: border-box; /* Include padding in width calculation */
+      }
+
+      /* Lock Icon Styling */
+      .lock-icon {
+        font-size: 2.2em; /* Larger icon */
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      /* Admin Login Title */
+      .login-card h2 {
+        font-size: 1.8em;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #222;
+      }
+
+      /* Form Group for Labels and Inputs */
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+        position: relative; /* For label animation/placement */
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0; /* Light border */
+        border-radius: 50px;
+        font-size: 1em;
+        color: #333;
+        outline: none;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-sizing: border-box; /* Include padding and border in width */
+      }
+
+      .form-group input:focus {
+        border-color: #c0c0c0; /* Slightly darker border on focus */
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); /* Very subtle focus ring */
+      }
+
+      /* Login Button */
+      .cta-button {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid #171616;
+        border-radius: 50px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        color: #555;
+        transition: all 0.3s ease;
+      }
+
+      .cta-button:hover {
+        background-color: #f5f5f5;
+        border-color: #999;
+      }
+
+      /* Footer Text */
+      .footer-text {
+        font-size: 0.8em;
+        color: #999;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="lock-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h2>Admin Login</h2>
+        <form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder=" "
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder=" "
+              required
+            />
+          </div><br />
+          <button type="submit" formaction="admin.html" class="cta-button">Login</button>
+        </form>
+        <p class="footer-text">Admin Only</p>
+      </div>
+    </div>
+  </body>
+</html>

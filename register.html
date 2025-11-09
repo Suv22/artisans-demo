@@ -44,6 +44,9 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+       .container {
+        max-width: 50rem; /* 672px */
+        }
       .page-container {
         display: flex;
         flex-direction: column;
@@ -263,14 +266,7 @@
         background-color: #fee2e2; /* A light red */
         color: #991b1b; /* A dark red */
       }
-      .main-footer {
-        flex-direction: row; /* Align side-by-side */
-        justify-content: space-between;
-      }
-
-      .footer-right a {
-        margin-left: 1.5rem;
-      }
+      
       .top-right-link {
         /* This is the key part for positioning */
         position: fixed;
@@ -334,6 +330,10 @@
 
       /* --- desktop Responsive Styles --- */
       @media (min-width: 768px) {
+        .container {
+          width: 60%;
+        }
+
         .page-container {
           padding: 2rem 4rem; /* Desktop padding */
         }
@@ -673,7 +673,7 @@
           <a href="#">Terms</a>
           <a href="#">Privacy</a>
           <a href="#">Accessibility</a>
-          <a href="admin.html">Admin Dashboard</a>
+          <a href="log_in.html">Admin Dashboard</a>
         </div>
       </footer>
     </div>

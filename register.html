@@ -45,30 +45,22 @@
         -moz-osx-font-smoothing: grayscale;
       }
       .page-container {
-        padding: 2rem 4rem; /* Desktop padding */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 1.5rem; /* Mobile padding */
+        box-sizing: border-box;
       }
 
       .main-header {
-        justify-content: space-between;
-      }
-
-      .desktop-nav {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end; /* Align hamburger to the right */
+        align-items: center;
         width: 100%;
       }
 
-      .nav-left,
-      .nav-right {
-        display: flex;
-        gap: 1.5rem;
-        align-items: center;
-      }
-
-      .desktop-nav a {
-        text-decoration: none;
-        color: #333;
-        font-size: 0.9rem;
+      .desktop-nav {
+        display: none; /* Hide desktop nav on mobile */
       }
 
        /* Hamburger Menu */
@@ -340,7 +332,7 @@
         color: #666;
       }
 
-      /* --- Mobile Responsive Styles --- */
+      /* --- desktop Responsive Styles --- */
       @media (min-width: 768px) {
         .page-container {
           padding: 2rem 4rem; /* Desktop padding */

@@ -36,12 +36,96 @@
         box-sizing: border-box;
       }
 
-      body,html {
+      body,
+      html {
         font-family: "Inter", sans-serif;
         color: #333;
         background-color: #fdfdfd;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+      .page-container {
+        padding: 2rem 4rem; /* Desktop padding */
+      }
+
+      .main-header {
+        justify-content: space-between;
+      }
+
+      .desktop-nav {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .nav-left,
+      .nav-right {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      .desktop-nav a {
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9rem;
+      }
+
+       /* Hamburger Menu */
+      .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 2rem;
+        height: 1.5rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+      }
+
+      .hamburger-bar {
+        width: 1.7rem;
+        height: 0.1rem;
+        background: #333;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+      }
+
+      /* Mobile Navigation Panel */
+      .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fdfdfd;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 5;
+      }
+
+      .mobile-nav.is-open {
+        transform: translateX(0);
+      }
+
+      .mobile-nav nav {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .mobile-nav a {
+        font-size: 1.5rem;
+        padding: 1rem;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
       }
 
       /* --- Layout Styles --- */
@@ -59,7 +143,7 @@
       .heading-section h1 {
         font-size: 2rem;
         font-weight: 700;
-        color:#333; /* Use main text color for the title */
+        color: #333; /* Use main text color for the title */
       }
 
       .heading-section p {
@@ -97,7 +181,7 @@
         padding: 0.75rem;
         background-color: hsl(var(--background));
         border: 1px solid hsl(var(--input));
-        border-radius: calc( 50px);
+        border-radius: calc(50px);
         font-size: 1rem;
         color: hsl(var(--foreground));
         transition: border-color 0.2s, box-shadow 0.2s;
@@ -122,37 +206,40 @@
       }
 
       .form-file-input::file-selector-button {
-        margin-right: 1rem;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: calc(var(--radius) - 2px);
-        font-size: 0.875rem;
-        font-weight: 600;
-        background-color: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
+        background-color: transparent;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        font-family: "Inter", sans-serif;
         cursor: pointer;
-        transition: opacity 0.2s;
+        color: #555;
+        transition: all 0.3s ease;
       }
 
       .form-file-input::file-selector-button:hover {
-        opacity: 0.9;
+        background-color: #f5f5f5;
+        border-color: #999;
+      }
+      .button-wrapper {
+        text-align: center;
       }
 
       .submit-btn {
-        width: 100%;
-        background-color: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
-        font-weight: 700;
-        font-size: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: calc(var(--radius) - 2px);
-        border: none;
+        background-color: transparent;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        font-family: "Inter", sans-serif;
         cursor: pointer;
-        transition: opacity 0.2s;
+        color: #555;
+        transition: all 0.3s ease;
       }
 
       .submit-btn:hover {
-        opacity: 0.9;
+        background-color: #f5f5f5;
+        border-color: #999;
       }
 
       .submit-btn:focus {
@@ -184,22 +271,13 @@
         background-color: #fee2e2; /* A light red */
         color: #991b1b; /* A dark red */
       }
-
-      footer {
-        text-align: center;
-        margin-top: 2.5rem;
+      .main-footer {
+        flex-direction: row; /* Align side-by-side */
+        justify-content: space-between;
       }
 
-      footer a {
-        font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-
-      footer a:hover {
-        color: hsl(var(--foreground));
-        text-decoration: underline;
+      .footer-right a {
+        margin-left: 1.5rem;
       }
       .top-right-link {
         /* This is the key part for positioning */
@@ -224,58 +302,158 @@
       .top-right-link:hover {
         background-color: #555;
       }
+      
+      @media (max-width: 480px) {
+        .artisan-grid {
+          grid-template-columns: repeat(2, 1fr); /* still 2 cols on phones */
+          gap: 0.8rem;
+        }
+        .artisan-card img {
+          height: 140px; /* smaller images */
+        }
+        .artisan-card .artisan-name {
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Footer */
+      .main-footer {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        gap: 1rem;
+        text-align: center;
+        width: 100%;
+        padding-top: 2rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .footer-right {
+        display: flex;
+        flex-wrap: wrap; /* Allow links to wrap */
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .footer-right a {
+        text-decoration: none;
+        color: #666;
+      }
 
       /* --- Mobile Responsive Styles --- */
       @media (min-width: 768px) {
-        .container {
-          padding: 3rem 2rem;
+        .page-container {
+          padding: 2rem 4rem; /* Desktop padding */
         }
 
-        .heading-section h1 {
-          font-size: 2.25rem;
+        .main-header {
+          justify-content: space-between;
         }
 
-        .artisan-form {
-          padding: 2.5rem;
+        .desktop-nav {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
         }
 
-        .form-grid {
-          grid-template-columns: 1fr 1fr;
+        .nav-left,
+        .nav-right {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
+        }
+
+        .desktop-nav a {
+          text-decoration: none;
+          color: #333;
+          font-size: 0.9rem;
+        }
+
+        .hamburger-menu {
+          display: none; /* Hide hamburger on desktop */
+        }
+
+        .cta-button {
+          padding: 1rem 2rem;
+          font-size: 1rem;
+        }
+
+        .main-footer {
+          flex-direction: row; /* Align side-by-side */
+          justify-content: space-between;
+        }
+
+        .footer-right a {
+          margin-left: 1.5rem;
         }
       }
     </style>
   </head>
   <body>
-    
-    <a href="admin.html" class="top-right-link">Admin Dashboard</a>
-    <div class="container">
-      <div class="heading-section">
-        <h1>Artisan Verification</h1>
-        <p>Submit your details and craft for verification.</p>
-      </div>
+    <!-- <a href="admin.html" class="top-right-link">Admin Dashboard</a> -->
+    <div class="page-container">
+      <header class="main-header">
+        <div class="desktop-nav">
+          <nav class="nav-left">
+            <a href="all_craftsList.html">Crafts</a>
+            <a href="#">Artisan Stories</a>
+            <a href="#">Verification Standards</a>
+          </nav>
+          <nav class="nav-right">
+            <!-- <a href="register.html">Register Artisan</a> -->
+            <a href="#">Our Journey</a>
+            <a href="register.html">Get Verified</a>
+          </nav>
+        </div>
 
-      <form id="artisanForm" class="artisan-form">
-        <div>
-          <label for="name">Full Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            class="form-input"
-          />
+        <button
+          class="hamburger-menu"
+          id="hamburger-menu"
+          aria-label="Open navigation menu"
+        >
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </header>
+       <div class="mobile-nav" id="mobile-nav">
+        <nav>
+          <!-- <a href="register.html">Register Artisan</a> -->
+          <a href="all_craftsList.html">Crafts</a>
+          <a href="#">Artisan Stories</a>
+          <a href="#">Verification Standards</a>
+          <a href="#">Our Journey</a>
+          <a href="register.html">Get Verified</a>
+        </nav>
+      </div>
+      <div class="container">
+        <div class="heading-section">
+          <h1>Artisan Verification</h1>
+          <p>Submit your details and craft for verification.</p>
         </div>
-        <div>
-          <label for="phone">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            required
-            class="form-input"
-          />
-        </div>
-        <!-- <div>
+
+        <form id="artisanForm" class="artisan-form">
+          <div>
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="form-input"
+            />
+          </div>
+          <div>
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              class="form-input"
+            />
+          </div>
+          <!-- <div>
           <label for="craft">Craft</label>
           <select id="craft" name="craft_id" class="form-input" required>
             <option value="">-- Select Craft --</option>
@@ -286,122 +464,122 @@
             <option value="5">Jewelry</option>
           </select>
         </div> -->
-        <div>
-          <label for="craft">Craft</label>
-          <select id="craft" name="craft_id" class="form-input" required>
-            <option value="">-- Select Craft --</option>
-          </select>
-        </div>
+          <div>
+            <label for="craft">Craft</label>
+            <select id="craft" name="craft_id" class="form-input" required>
+              <option value="">-- Select Craft --</option>
+            </select>
+          </div>
 
-        <div>
-          <label for="experience">Years of Experience</label>
-          <input
-            type="number"
-            id="experience"
-            name="experience"
-            class="form-input"
-            placeholder="e.g., 5"
-            min="0"
-          />
-        </div>
-        <div>
-          <label for="materials">Materials Used</label>
-          <input
-            type="text"
-            id="materials"
-            name="materials"
-            placeholder="e.g., Clay, Natural dyes, Cotton threads, Brass, Wood"
-            class="form-input"
-            required
-          />
-        </div>
+          <div>
+            <label for="experience">Years of Experience</label>
+            <input
+              type="number"
+              id="experience"
+              name="experience"
+              class="form-input"
+              placeholder="e.g., 5"
+              min="0"
+            />
+          </div>
+          <div>
+            <label for="materials">Materials Used</label>
+            <input
+              type="text"
+              id="materials"
+              name="materials"
+              placeholder="e.g., Clay, Natural dyes, Cotton threads, Brass, Wood"
+              class="form-input"
+              required
+            />
+          </div>
 
-        <div>
-          <label for="awards">Awards</label>
-          <select id="awards" name="awards" class="form-input" multiple>
-            <option value="">-- Select Award --</option>
-            <option value="State Award">State Award</option>
-            <option value="National Award">National Award</option>
-            <option value="National Merit Certificate">
-              National Merit Certificate
-            </option>
-            <option value="Hastakala Award">Hastakala Award</option>
-            <option value="Shilp Guru Award">Shilp Guru Award</option>
-            <option value="GI Product">GI Product</option>
-          </select>
-        </div>
+          <div>
+            <label for="awards">Awards</label>
+            <select id="awards" name="awards" class="form-input" multiple>
+              <option value="">-- Select Award --</option>
+              <option value="State Award">State Award</option>
+              <option value="National Award">National Award</option>
+              <option value="National Merit Certificate">
+                National Merit Certificate
+              </option>
+              <option value="Hastakala Award">Hastakala Award</option>
+              <option value="Shilp Guru Award">Shilp Guru Award</option>
+              <option value="GI Product">GI Product</option>
+            </select>
+          </div>
 
-        <div>
-          <label for="one_liner">One Liner</label>
-          <input
-            type="text"
-            id="one_liner"
-            name="one_liner"
-            placeholder="A short tagline about the artisan"
-            class="form-input"
-          />
-        </div>
-        <div>
-          <label for="quote">Quote</label>
-          <input
-            type="text"
-            id="quote"
-            name="quote"
-            placeholder="Inspiring quote by the artisan"
-            class="form-input"
-          />
-        </div>
+          <div>
+            <label for="one_liner">One Liner</label>
+            <input
+              type="text"
+              id="one_liner"
+              name="one_liner"
+              placeholder="A short tagline about the artisan"
+              class="form-input"
+            />
+          </div>
+          <div>
+            <label for="quote">Quote</label>
+            <input
+              type="text"
+              id="quote"
+              name="quote"
+              placeholder="Inspiring quote by the artisan"
+              class="form-input"
+            />
+          </div>
 
-        <!-- GI Tag Info -->
-        <div>
-          <label for="g_tag_info">GI Tag Info</label>
-          <input
-            type="text"
-            id="g_tag_info"
-            name="gi_tag_info"
-            placeholder="GI Tag details if applicable"
-            class="form-input"
-          />
-        </div>
+          <!-- GI Tag Info -->
+          <div>
+            <label for="g_tag_info">GI Tag Info</label>
+            <input
+              type="text"
+              id="g_tag_info"
+              name="gi_tag_info"
+              placeholder="GI Tag details if applicable"
+              class="form-input"
+            />
+          </div>
 
-        <!-- Verification Notes (optional, admin use) -->
-        <div>
-          <label for="verification_notes">Verification Notes</label>
-          <textarea
-            id="verification_notes"
-            name="verification_notes"
-            placeholder="Admin verification notes"
-            class="form-input"
-          ></textarea>
-        </div>
+          <!-- Verification Notes (optional, admin use) -->
+          <div>
+            <label for="verification_notes">Verification Notes</label>
+            <textarea
+              id="verification_notes"
+              name="verification_notes"
+              placeholder="Admin verification notes"
+              class="form-input"
+            ></textarea>
+          </div>
 
-        <!-- Photo Link -->
-        <div>
-          <label for="photo_link">Upload Artisan Photo</label>
-          <input
-            type="file"
-            id="photo_link"
-            name="photo_link"
-            accept="image/*"
-            class="form-input"
-          />
-        </div>
+          <!-- Photo Link -->
+          <div>
+            <label for="photo_link">Upload Artisan Photo</label>
+            <input
+              type="file"
+              id="photo_link"
+              name="photo_link"
+              accept="image/*"
+              class="form-file-input"
+            />
+          </div>
 
-        <!-- Workshop Photo Link -->
-        <div>
-          <label for="workshop_photo_link">Workshop Photo Link</label>
-          <input
-            type="file"
-            id="workshop_photo_link"
-            name="workshop_photo_link"
-            accept="image/*"
-            class="form-input"
-            multiple
-          />
-        </div>
+          <!-- Workshop Photo Link -->
+          <div>
+            <label for="workshop_photo_link">Workshop Photo Link</label>
+            <input
+              type="file"
+              id="workshop_photo_link"
+              name="workshop_photo_link"
+              accept="image/*"
+              class="form-file-input"
+              multiple
+            />
+          </div>
 
-        <!-- Video Link -->
-        <!-- <div>
+          <!-- Video Link -->
+          <!-- <div>
           <label for="video_link">Video Link</label>
           <input
             type="url"
@@ -412,67 +590,67 @@
           />
         </div> -->
 
-        <!-- Business Identity -->
-        <div>
-          <label for="business_identity"
-            >Business Identity (Established Year)</label
-          >
-          <input
-            type="text"
-            id="business_identity"
-            name="business_identity"
-            placeholder="Business identity details"
-            class="form-input"
-          />
-        </div>
-
-        <div>
-          <label for="aadhaar_last4">Last 4 Digits of Aadhaar</label>
-          <input
-            type="text"
-            id="aadhaar_last4"
-            name="aadhaar_last4"
-            required
-            minlength="4"
-            maxlength="4"
-            pattern="\d{4}"
-            class="form-input"
-          />
-        </div>
-        <div>
-          <label for="location">Location (City, State)</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            required
-            class="form-input"
-          />
-        </div>
-
-        <div class="form-grid">
+          <!-- Business Identity -->
           <div>
-            <label for="aadhaar_front">Aadhaar Card (Front)</label>
+            <label for="business_identity"
+              >Business Identity (Established Year)</label
+            >
             <input
-              type="file"
-              id="aadhaar_front"
-              name="aadhaar_front"
-              accept="image/*"
-              class="form-file-input"
+              type="text"
+              id="business_identity"
+              name="business_identity"
+              placeholder="Business identity details"
+              class="form-input"
+            />
+          </div>
+
+          <div>
+            <label for="aadhaar_last4">Last 4 Digits of Aadhaar</label>
+            <input
+              type="text"
+              id="aadhaar_last4"
+              name="aadhaar_last4"
+              required
+              minlength="4"
+              maxlength="4"
+              pattern="\d{4}"
+              class="form-input"
             />
           </div>
           <div>
-            <label for="aadhaar_back">Aadhaar Card (Back)</label>
+            <label for="location">Location (City, State)</label>
             <input
-              type="file"
-              id="aadhaar_back"
-              name="aadhaar_back"
-              accept="image/*"
-              class="form-file-input"
+              type="text"
+              id="location"
+              name="location"
+              required
+              class="form-input"
             />
           </div>
-        </div>
-        <!-- <div>
+
+          <div class="form-grid">
+            <div>
+              <label for="aadhaar_front">Aadhaar Card (Front)</label>
+              <input
+                type="file"
+                id="aadhaar_front"
+                name="aadhaar_front"
+                accept="image/*"
+                class="form-file-input"
+              />
+            </div>
+            <div>
+              <label for="aadhaar_back">Aadhaar Card (Back)</label>
+              <input
+                type="file"
+                id="aadhaar_back"
+                name="aadhaar_back"
+                accept="image/*"
+                class="form-file-input"
+              />
+            </div>
+          </div>
+          <!-- <div>
           <label for="craft_photos">Craft Photos (min 2, max 3)</label>
           <input
             type="file"
@@ -485,14 +663,26 @@
           />
         </div> -->
 
-        <button type="submit" id="submitBtn" class="submit-btn">
-          Submit for Verification
-        </button>
+          <div class="button-wrapper">
+            <button type="submit" id="submitBtn" class="submit-btn">
+              Submit for Verification
+            </button>
+          </div>
 
-        <div id="message" class="message-box"></div>
-      </form>
-      <footer>
-        <!-- <a href="admin.html">Admin Dashboard</a> -->
+          <div id="message" class="message-box"></div>
+        </form>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-left">
+          &copy; GI Connect &middot; 2025 Authorship. Craft. Trust.
+        </div>
+        <div class="footer-right">
+          <a href="#">Contact us</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Accessibility</a>
+          <a href="admin.html">Admin Dashboard</a>
+        </div>
       </footer>
     </div>
 
@@ -526,6 +716,16 @@
           select.appendChild(option);
         });
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const mobileNav = document.getElementById("mobile-nav");
+
+        hamburgerMenu.addEventListener("click", () => {
+          // Toggle the 'is-open' class on the mobile navigation menu
+          mobileNav.classList.toggle("is-open");
+        });
+      });
 
       document.addEventListener("DOMContentLoaded", loadCrafts);
 

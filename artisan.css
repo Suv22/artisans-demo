@@ -17,13 +17,15 @@ body {
     font-family: 'inter', sans-serif;
     line-height: 1.6;
 }
+
 .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-weight: 600;
     line-height: 1.2;
     color: var(--text-primary);
@@ -36,10 +38,10 @@ h1 {
 }
 
 .verified-tick {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-  margin-left: 6px;
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    margin-left: 6px;
 }
 
 
@@ -54,6 +56,7 @@ h2.card-title {
     align-items: center;
     gap: 0.5rem;
 }
+
 h2.card-title1 {
     font-size: 1.2rem;
     font-weight: 600;
@@ -64,6 +67,7 @@ h2.card-title1 {
     align-items: center;
     gap: 0.5rem;
 }
+
 h2.card-title1 svg {
     width: 1.2em;
     height: 1.2em;
@@ -75,46 +79,49 @@ h2.card-title svg {
     height: 1.2em;
 }
 
-p{
+p {
     margin: 1rem 0rem 0rem 0rem;
     color: var(--text-secondary);
 }
+
 /* The main row container */
 .stats-row {
-    
+
     display: flex;
-    justify-content: space-between; /* Spreads items out evenly */
+    justify-content: space-between;
+    /* Spreads items out evenly */
     /* align-items: flex-start; */
 }
 
 /* Each individual stat block */
 .stat-item {
-    margin:  0.5rem 0rem 0rem 0rem;
+    margin: 0.5rem 0rem 0rem 0rem;
 }
 
 /* Style for the label (your h6) */
 .stat-item p {
     font-size: 0.9rem;
-    margin:  0.1rem 0rem 0rem 0rem;
-    color: var(--text-secondary);/* Makes it look like a proper label */
+    margin: 0.1rem 0rem 0rem 0rem;
+    color: var(--text-secondary);
+    /* Makes it look like a proper label */
 }
 
 .craft-knowmore {
     width: 100%;
     /* 1. Use Flexbox to put items in a row */
     display: flex;
-    
+
     /* 2. Push items to the "two corners" (left and right) */
     justify-content: space-between;
-    
+
     /* 3. Vertically align the text and button */
-    align-items: center; 
-    
+    align-items: center;
+
     /* 4. Add the black horizontal underline */
     border-bottom: 1.5px solid #1a1a1a;
-    
+
     /* 5. Add space between the content and the line */
-    padding-bottom: 0.5rem; 
+    padding-bottom: 0.5rem;
 }
 
 /* Optional: Removes the default top/bottom margin from the h2 
@@ -153,11 +160,12 @@ p{
 }
 
 .verified-badge {
-  display: inline-block;
-  margin-left: 8px;
-  font-size: 1.2rem;
-  color: #1da1f2; /* Instagram/Twitter blue */
-  vertical-align: middle;
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 1.2rem;
+    color: #1da1f2;
+    /* Instagram/Twitter blue */
+    vertical-align: middle;
 }
 
 /* craftNme, exp, place */
@@ -168,10 +176,11 @@ p{
     margin-bottom: 0rem;
     color: #333;
     font-size: 1.1rem;
-    font-family:  "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
-.header-meta .location, .header-meta .craft-name {
+.header-meta .location,
+.header-meta .craft-name {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
@@ -249,7 +258,7 @@ ul {
     list-style: none;
 }
 
-.credentials-list > li:not(:last-child) {
+.credentials-list>li:not(:last-child) {
     margin-bottom: 1rem;
     font-size: 16px;
     color: var(--text-secondary);
@@ -322,7 +331,8 @@ ul {
 .video-item {
     margin-top: 1rem;
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
     height: 0;
 }
 
@@ -336,29 +346,29 @@ ul {
 }
 
 .view-more-btn {
-  margin-top: 10px;
-  padding: 6px 12px;
-  color: rgb(0, 0, 0);
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
+    margin-top: 10px;
+    padding: 6px 12px;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .view-more-btn:hover {
-  background: #cacaca;
+    background: #cacaca;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .info-btn {
     height: 25px;
     background-color: #ffffff;
     color: rgb(0, 0, 0);
-    border:none;
+    border: none;
     border-radius: 2px;
     cursor: pointer;
     font-size: 14px;
@@ -366,8 +376,8 @@ ul {
 }
 
 .info-btn:hover {
-  background-color: #000000;
-  color: #efebeb;
+    background-color: #000000;
+    color: #efebeb;
 }
 
 
@@ -378,56 +388,131 @@ ul {
 */
 
 @media (max-width: 768px) {
-    
-    /* --- General Layout & Spacing --- */
+
+    /* --- General Layout --- */
     .container {
-        padding: 20px 0.75rem;
+        padding: 2rem 0.5rem;
+        /* Reduce side padding */
     }
 
-    .cv-grid {
-        grid-template-columns: 1fr; /* Stack columns */
-        gap: 1.5rem;
-    }
-
-    .card {
-        padding: 1rem;
-    }
-    
-    /* --- Header on Mobile --- */
+    /* --- Header --- */
     .header-main {
-        flex-direction: column; /* Stack header items vertically */
-        align-items: center;   /* Center them */
-        gap: 0rem;
-        text-align: center;
+        flex-direction: column;
+        /* Stack header items vertically */
+        align-items: center;
+        /* Center-align them */
+        gap: 1rem;
     }
 
-    .header-meta {
-        justify-content: center; /* Center the meta items like location/craft */
-        flex-wrap: wrap;         /* Allow them to wrap to a new line */
+    .header-details {
+        text-align: center;
+        /* Center-align the text details */
+    }
+
+    /* --- New Header Layout for Mobile --- */
+    .header-main {
+        /* 1. Change from flex to grid */
+        display: grid;
+
+        /* 2. Define two columns (one for pic, one for QR) */
+        grid-template-columns: auto auto;
+
+        /* 3. Define the layout areas */
+        grid-template-areas:
+            "photo qr"
+            /* Row 1: pic on left, qr on right */
+            "details details";
+        /* Row 2: details span both columns */
+
+        /* 4. Push the photo and QR to the corners */
+        justify-content: space-between;
+        align-items: center;
+        /* Vertically center the pic and QR */
+        gap: 1rem;
+    }
+
+    /* 5. Assign each part to its grid area */
+    .profile-picture-container {
+        grid-area: photo;
+    }
+
+    .header-details {
+        grid-area: details;
+        text-align: center;
+        /* Center the text block */
+        margin-top: 1rem;
+        /* Add space above the text */
+    }
+
+    .qr-code-container {
+        grid-area: qr;
     }
 
 
     .profile-picture-container img {
-        width: 120px;   /* Slightly smaller profile picture */
+        width: 120px;
+        /* Make profile picture smaller */
         height: 120px;
+        margin-left: 25px;
+    }
+    .qr-code-container img {
+        width: 90px;
+        /* Make QR code smaller */
+        height: 90px;
     }
 
-    /* --- Typography on Mobile --- */
     h1 {
-        font-size: 1.2rem; /* Reduce main heading size */
+        font-size: 1.5rem;
+        margin: 0rem;
+        /* Make main name smaller */
+    }
+    .header-meta{
+        justify-content: center;
+        margin-top: 1rem;
+        font-size: 0.9rem
     }
 
-    .one-liner {
+    /* --- Main Body Grid --- */
+    .cv-grid {
+        grid-template-columns: 1fr;
+        /* Stack the 2 columns into 1 */
+        gap: 1.5rem;
+        /* Reduce the gap between stacked sections */
+    }
+
+    .profile-body {
+        padding-top: 1.5rem;
+    }
+
+    /* --- Spacing & Stats --- */
+    .stats-row {
+        flex-wrap: wrap;
+        /* Allow stats to wrap */
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 0.5rem 1rem 1.5rem 1rem;
+        /* Reduce card padding */
+    }
+
+    /* --- Business Info List --- */
+    .business-info li {
+        flex-direction: column;
+        /* Stack list item label and value */
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .business-info span:first-child {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .business-info span:last-child {
         font-size: 1rem;
-    }
-    
-    h2.card-title {
-        font-size: 1.1rem;
-    }
-    
-    /* --- Specific Sections on Mobile --- */
-    .gallery-grid {
-        /* This grid is already responsive, but we can reduce the min size for smaller phones */
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        font-weight: 500;
+        color: var(--text-primary);
     }
 }

@@ -49,18 +49,19 @@ async function renderProfile(artisan, craft, error) {
       : ""
   }</h1>
             <div class="header-meta">
-              <span>Years of Experience: ${
+             <span>${artisan.craft?.name || ""}</span> • 
+             <span class="location">${artisan.place}</span>
+              
+             
+            </div>
+            <div class="header-meta">
+              <span>Expertise since: ${
                 artisan.yr_experience || "N/A"
               }</span>
-              <span>${artisan.craft?.name || ""}</span>
-              <span class="location">${ICONS.mapPin} ${artisan.place}</span>
             </div>
-            ${
-              artisan.one_liner
-                ? `<p class="one-liner">${artisan.one_liner}</p>`
-                : ""
-            }
+            
           </div>
+       
           <div class="qr-code-container" id="qr-section" style="display:none;">
             <div id="qr-code"></div>
             <span>GI Connect Verified Artisan</span>
@@ -71,11 +72,19 @@ async function renderProfile(artisan, craft, error) {
       <main class="profile-body container">
         <div class="cv-grid">
           <div class="cv-main-column">
+          <section class="card">
+           <h2 class="card-title">About Artisan</h2>
+             ${
+               artisan.one_liner
+                 ? `<p class="one-liner">${artisan.one_liner}</p>`
+                 : ""
+             }
+          </section>
             ${
               artisan.quote
                 ? `
               <section class="card">
-                <h2 class="card-title">Introduction</h2>
+               
                 <blockquote class="quote-block"><span class="quote-mark">“</span>${artisan.quote}</blockquote>
               </section>`
                 : ""
@@ -86,11 +95,33 @@ async function renderProfile(artisan, craft, error) {
                 ? `
               <section class="card">
                 <div class="card-header">
-                  <h2 class="card-title">The Crafting Process</h2>
-                  <button class="info-btn" id="know-more-btn" data-craft-id="${artisan.craft_id}">Know More</button>
+                <div class = "craft-knowmore">
+                  <h2 class="card-title1">The Crafting Process</h2>
+                  <button class="info-btn" id="know-more-btn" data-craft-id="${
+                    artisan.craft_id
+                  }">Know More</button></div>
                 </div>
+                <!-- <p>${artisan.craft?.one_liner}</p> -->
                 <p>${artisan.craft?.artisan_craftProcess}</p>
-              </section>`
+                <div class="stats-row">
+
+    <div class="stat-item">
+        <p>● Average Time Required
+        : ${artisan.craft?.avg_timeReq || "N/A"}</p>
+    </div>
+    <div class="stat-item">
+        <p>● People Required: ${
+          artisan.craft?.people_required || "N/A"
+        } Artisans</p>
+    </div>
+
+</div>
+<div class="stat-item">
+        <p>● Steps Required: ${artisan.craft?.steps_req || "N/A"}</p>
+    </div>
+              </section>
+              
+              `
                 : ""
             }
 
@@ -113,14 +144,6 @@ async function renderProfile(artisan, craft, error) {
                 ${
                   workshop_photos.length > 3
                     ? `<button id="toggle-gallery-btn" class="view-more-btn">View More</button>`
-                    : ""
-                }
-                ${
-                  artisan.video_link
-                    ? `
-                  <div class="video-item">
-                    <iframe src="${artisan.video_link}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                  </div>`
                     : ""
                 }
               </section>`
@@ -245,7 +268,10 @@ async function main() {
           craft:craft_id (
             name, 
             one_liner, 
-            artisan_craftProcess 
+            artisan_craftProcess,
+            steps_req,
+            people_required,
+            avg_timeReq
           )
         `
       )

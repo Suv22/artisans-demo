@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Use</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* General Body and Reset */
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background-color: #fdfdfd; /* Very light grey background */
+        color: #333;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.6;
+        display: flex; /* Use flexbox for overall page layout */
+        flex-direction: column; /* Stack header, main, footer vertically */
+        min-height: 100vh; /* Ensure footer is at the bottom */
+      }
+
+      .content-container {
+        background-color: #ffffff;
+        flex-grow: 1; /* Allows the main content to take up available space */
+        max-width: 800px; /* Constrain content width */
+        margin: 40px auto; /* Center content with vertical margin */
+        padding: 0 20px; /* Horizontal padding for smaller screens */
+        border-radius: var(--radius);
+        border: 1px solid hsl(var(--border));
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Terms Header (Title and Tag) */
+      .terms-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .terms-header h1 {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .terms-brief-tag {
+        display: inline-block;
+        background-color: #fdfdfd; /* Light grey tag background */
+        color: #555;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 500;
+      }
+
+      /* Individual Terms Sections */
+      .terms-section {
+        margin-bottom: 30px;
+      }
+
+      .terms-section h3 {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .terms-section p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      /* Highlighted Box */
+      .highlight-box {
+        background-color: #f0f0f0; /* Lighter grey for highlight */
+        border: 1px solid #e5e5e5;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 40px; /* Space after the highlighted section */
+      }
+
+      .highlight-box p {
+        font-size: 1em;
+        font-weight: 500;
+        color: #444;
+      }
+
+      .page-container {
+        padding: 2rem 4rem; /* Desktop padding */
+      }
+
+      .main-header {
+        justify-content: space-between;
+      }
+
+      .desktop-nav {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .nav-left,
+      .nav-right {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      .desktop-nav a {
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9rem;
+      }
+      nav {
+        display: none;
+      }
+
+      .hamburger-menu {
+        display: none; /* Hide hamburger on desktop */
+      }
+
+      .hero-section {
+        margin-top: 0;
+      }
+
+      .hero-section h1 {
+        font-size: 2.5rem;
+      }
+
+      .cta-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+      }
+
+      .main-footer {
+        display: flex;
+        flex-direction: row; /* Stack items vertically */
+        justify-content: space-between;
+        gap: 1rem;
+        text-align: center;
+        width: 100%;
+        padding-top: 2rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .footer-right a {
+        text-decoration: none;
+        color: #666;
+      }
+      
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .content-container {
+          margin: 20px auto;
+          padding: 0 15px;
+        }
+
+        .terms-header h1 {
+          font-size: 2em;
+        }
+        .page-container {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          padding: 1.5rem; /* Mobile padding */
+          box-sizing: border-box;
+        }
+
+        /* --- MOBILE STYLES --- */
+
+        /* Header */
+        .main-header {
+          display: flex;
+          justify-content: flex-end; /* Align hamburger to the right */
+          align-items: center;
+          width: 100%;
+        }
+
+        .desktop-nav {
+          display: none; /* Hide desktop nav on mobile */
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          width: 2rem;
+          height: 1.5rem;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          z-index: 10;
+        }
+
+        .hamburger-bar {
+          width: 2rem;
+          height: 0.2rem;
+          background: #333;
+          border-radius: 10px;
+          transition: all 0.3s linear;
+        }
+
+        /* Mobile Navigation Panel */
+        .mobile-nav {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background: #fdfdfd;
+          height: 100vh;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          left: 0;
+          transform: translateX(100%);
+          transition: transform 0.3s ease-in-out;
+          z-index: 5;
+        }
+
+        .mobile-nav.is-open {
+          transform: translateX(0);
+        }
+
+        .mobile-nav nav {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .mobile-nav a {
+          font-size: 1.5rem;
+          padding: 1rem;
+          color: #333;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        /* Footer */
+        .main-footer {
+          display: flex;
+          flex-direction: column; /* Stack items vertically */
+          gap: 1rem;
+          text-align: center;
+          width: 100%;
+          padding-top: 2rem;
+          font-size: 0.8rem;
+          color: #666;
+        }
+
+        .footer-right {
+          display: flex;
+          flex-wrap: wrap; /* Allow links to wrap */
+          justify-content: center;
+          gap: 1rem;
+        }
+
+        .footer-right a {
+          text-decoration: none;
+          color: #666;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-container">
+      <header class="main-header">
+        <div class="desktop-nav">
+          <nav class="nav-left">
+            <a href="all_craftsList.html">Crafts</a>
+            <!-- <a href="#">Artisan Stories</a> -->
+            <a href="#">Verification Standards</a>
+          </nav>
+          <nav class="nav-right">
+            <!-- <a href="register.html">Register Artisan</a> -->
+            <a href="#">Our Journey</a>
+            <a href="register.html">Get Verified</a>
+          </nav>
+        </div>
+
+        <button
+          class="hamburger-menu"
+          id="hamburger-menu"
+          aria-label="Open navigation menu"
+        >
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </header>
+
+      <div class="mobile-nav" id="mobile-nav">
+        <nav>
+          <!-- <a href="register.html">Register Artisan</a> -->
+          <a href="all_craftsList.html">Crafts</a>
+          <a href="#">Artisan Stories</a>
+          <a href="#">Verification Standards</a>
+          <a href="#">Our Journey</a>
+          <a href="register.html">Get Verified</a>
+        </nav>
+      </div>
+      <main class="content-container">
+        <section class="terms-header">
+          <h1>Terms of Use</h1>
+        </section>
+
+        <section class="terms-section">
+          <h3>Introduction</h3>
+          <p>
+            These Terms of Use govern your access to and use of Pinnakey Connect
+            (the “Platform”). By accessing or using this Platform, you agree to
+            be bound by these Terms and any future amendments. If you do not
+            agree, please discontinue use immediately.
+          </p>
+        </section>
+
+        <section class="terms-section">
+          <h3>1. User Obligations</h3>
+          <p>
+            You agree to provide accurate, current, and complete information
+            during registration and verification. You are solely responsible for
+            the authenticity of materials, documents, and data shared.
+          </p>
+        </section>
+
+        <section class="terms-section">
+          <h3>2. Intellectual Property</h3>
+          <p>
+            All original works submitted by artisans or organisations remain
+            their property. By submitting material, you grant Pinnakey Connect a
+            non-exclusive, royalty-free, and perpetual right to use, display,
+            archive, and promote your verified profile for public and
+            educational purposes.
+          </p>
+        </section>
+
+        <section class="terms-section">
+          <h3>3. Platform Rights</h3>
+          <p>
+            All tools, systems, and technologies developed under Pinnakey
+            Connect are the exclusive property of the organisation. You agree
+            not to reproduce, copy, or modify any part of the Platform without
+            written consent.
+          </p>
+        </section>
+
+        <section class="terms-section">
+          <h3>4. Limitation of Liability</h3>
+          <p>
+            Pinnakey Connect strives for accuracy but does not guarantee that
+            all data will be error-free or immune to misuse. We are not liable
+            for indirect, incidental, or consequential damages resulting from
+            use of the Platform.
+          </p>
+        </section>
+
+        <section class="terms-section">
+          <h3>5. Changes to Terms</h3>
+          <p>
+            These Terms may be updated periodically. Continued use of the
+            Platform constitutes acceptance of revised Terms.
+            <br /><br />
+            For questions regarding these Terms, please contact the Pinnakey
+            Connect team directly.
+            <br />
+            <br />
+          </p>
+        </section>
+      </main>
+
+      <footer class="main-footer">
+        <div class="footer-left">
+          &copy; GI Connect &middot; 2025 Authorship. Craft. Trust.
+        </div>
+        <div class="footer-right">
+          <a href="#">Contact us</a>
+          <a href="termsOfUse.html">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </footer>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const mobileNav = document.getElementById("mobile-nav");
+
+        hamburgerMenu.addEventListener("click", () => {
+          // Toggle the 'is-open' class on the mobile navigation menu
+          mobileNav.classList.toggle("is-open");
+        });
+      });
+    </script>
+  </body>
+</html>

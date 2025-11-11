@@ -13,7 +13,8 @@
 body {
     background-color: var(--background-color);
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-family: 'inter', sans-serif;
     line-height: 1.6;
 }
 .container {
@@ -28,6 +29,7 @@ h1, h2 {
     color: var(--text-primary);
 }
 
+/* heading Artisan Name*/
 h1 {
     font-size: 2.5rem;
     margin-bottom: 0.25rem;
@@ -40,6 +42,8 @@ h1 {
   margin-left: 6px;
 }
 
+
+/* craftingProcess */
 h2.card-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -50,16 +54,75 @@ h2.card-title {
     align-items: center;
     gap: 0.5rem;
 }
+h2.card-title1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0rem;
+    /* border-bottom: 1.5px solid #1a1a1a; */
+    /* padding-bottom: 0.5rem; */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+h2.card-title1 svg {
+    width: 1.2em;
+    height: 1.2em;
+}
+
 
 h2.card-title svg {
     width: 1.2em;
     height: 1.2em;
 }
 
-p {
-    margin-bottom: 1rem;
+p{
+    margin: 1rem 0rem 0rem 0rem;
     color: var(--text-secondary);
 }
+/* The main row container */
+.stats-row {
+    
+    display: flex;
+    justify-content: space-between; /* Spreads items out evenly */
+    /* align-items: flex-start; */
+}
+
+/* Each individual stat block */
+.stat-item {
+    margin:  0.5rem 0rem 0rem 0rem;
+}
+
+/* Style for the label (your h6) */
+.stat-item p {
+    font-size: 0.9rem;
+    margin:  0.1rem 0rem 0rem 0rem;
+    color: var(--text-secondary);/* Makes it look like a proper label */
+}
+
+.craft-knowmore {
+    width: 100%;
+    /* 1. Use Flexbox to put items in a row */
+    display: flex;
+    
+    /* 2. Push items to the "two corners" (left and right) */
+    justify-content: space-between;
+    
+    /* 3. Vertically align the text and button */
+    align-items: center; 
+    
+    /* 4. Add the black horizontal underline */
+    border-bottom: 1.5px solid #1a1a1a;
+    
+    /* 5. Add space between the content and the line */
+    padding-bottom: 0.5rem; 
+}
+
+/* Optional: Removes the default top/bottom margin from the h2 
+   so it aligns better with the button */
+.craft-knowmore .card-title {
+    margin: 0;
+}
+
 
 /* --- Header Section --- */
 .profile-header {
@@ -70,7 +133,7 @@ p {
 .header-main {
     display: flex;
     align-items: flex-start;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .profile-picture-container {
@@ -97,13 +160,15 @@ p {
   vertical-align: middle;
 }
 
+/* craftNme, exp, place */
 .header-meta {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
+    gap: 0.5rem;
+    margin-bottom: 0rem;
+    color: #333;
+    font-size: 1.1rem;
+    font-family:  "Inter", sans-serif;
 }
 
 .header-meta .location, .header-meta .craft-name {
@@ -117,13 +182,13 @@ p {
     height: 1em;
 }
 
+/* 1stPara */
 .one-liner {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--text-primary);
+    font-size: 16px;
+    color: var(--text-secondary);
     margin-top: 1rem;
-    border-left: 3px solid var(--accent-color);
-    padding-left: 1rem;
+    /* border-left: 3px solid var(--accent-color); */
+    padding-left: 0rem;
 }
 
 .qr-code-container {
@@ -154,9 +219,9 @@ p {
 
 .card {
     background-color: var(--card-background);
-    padding: 1.5rem;
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
     border-radius: 4px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0rem;
 }
 
 /* --- Specific Section Styles --- */
@@ -164,9 +229,10 @@ p {
     margin: 0;
     padding-left: 1.5rem;
     border-left: 3px solid var(--accent-color);
-    font-size: 1.1rem;
+    font-size: 16px;
     font-style: italic;
     position: relative;
+    color: var(--text-secondary);
 }
 
 .quote-mark {
@@ -185,6 +251,8 @@ ul {
 
 .credentials-list > li:not(:last-child) {
     margin-bottom: 1rem;
+    font-size: 16px;
+    color: var(--text-secondary);
 }
 
 .awards-sublist {

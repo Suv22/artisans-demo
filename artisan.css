@@ -406,9 +406,6 @@ ul {
         flex-wrap: wrap;         /* Allow them to wrap to a new line */
     }
 
-    .one-liner {
-        text-align: left; /* Keep quote text left-aligned for readability */
-    }
 
     .profile-picture-container img {
         width: 120px;   /* Slightly smaller profile picture */
@@ -417,7 +414,7 @@ ul {
 
     /* --- Typography on Mobile --- */
     h1 {
-        font-size: 2rem; /* Reduce main heading size */
+        font-size: 1.2rem; /* Reduce main heading size */
     }
 
     .one-liner {

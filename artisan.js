@@ -38,16 +38,11 @@ async function renderProfile(artisan, craft, error) {
       <header class="profile-header container">
         <div class="header-main">
           <div class="profile-picture-container">
-            <img src="${artisan.photo_link || "placeholder.jpg"}" alt="${
-    artisan.name
-  }">
+            <img src="${artisan.photo_link || "placeholder.jpg"}" alt="${artisan.name}">
           </div>
           <div class="header-details">
-            <h1>${artisan.name}${
-    artisan.status?.toLowerCase() === "approved"
-      ? `<img src="assets/tick.png" alt="Verified" class="verified-tick" />`
-      : ""
-  }</h1>
+            <h1>${artisan.name}${artisan.status?.toLowerCase() === "approved"
+            ? `<img src="assets/tick.png" alt="Verified" class="verified-tick" />`: ""}</h1>
             <div class="header-meta">
              <span>${artisan.craft?.name || ""}</span> • 
              <span class="location">${artisan.place}</span>

@@ -113,6 +113,37 @@
         transition: all 0.3s ease;
       }
 
+      /* --- Message Box Styles --- */
+
+      /* Base style (hidden) */
+      #message-box {
+        display: none; /* Hidden by default */
+        padding: 0.75rem;
+        margin-top: 1rem;
+        border-radius: 4px;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      /* This class is added by JS to show the box */
+      #message-box.show {
+        display: block;
+      }
+
+      /* Red "error" theme */
+      #message-box.error {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+      }
+
+      /* Black/white "success" theme */
+      #message-box.success {
+        background-color: #f3f4f6;
+        color: #1f2937;
+        border: 1px solid #d1d5db;
+      }
+
       .cta-button:hover {
         background-color: #f5f5f5;
         border-color: #999;
@@ -133,7 +164,8 @@
           <i class="fas fa-lock"></i>
         </div>
         <h2>Admin Login</h2>
-        <form>
+
+        <form id="admin-login-form">
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -153,11 +185,90 @@
               placeholder=" "
               required
             />
-          </div><br />
-          <button type="submit" formaction="admin.html" class="cta-button">Login</button>
+          </div>
+          <br />
+
+          <button type="submit" class="cta-button">Login</button>
         </form>
+
+        <div id="message-box"></div>
+
         <p class="footer-text">Admin Only</p>
       </div>
     </div>
+    <script type="module">
+      // Import your configured Supabase client
+      import { supabase } from "./supabaseClient.js";
+
+      // Get references to all the HTML elements
+      const loginForm = document.getElementById("admin-login-form");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const messageBox = document.getElementById("message-box");
+      const submitBtn = document.querySelector(".cta-button");
+
+      /**
+       * A helper function to show messages
+       * @param {string} message - The text to display
+       * @param {'success' | 'error'} type - The theme to use
+       */
+      function showMessage(message, type) {
+        messageBox.textContent = message;
+        // Set the class to 'show' plus the type ('success' or 'error')
+        messageBox.className = `show ${type}`;
+      }
+
+      // Listen for the form to be submitted
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Stop the page from reloading
+
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Disable button to prevent multiple clicks
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Logging in...";
+
+        try {
+          // 1. GET DATA FROM 'admin' TABLE
+          const { data, error } = await supabase
+            .from("admin")
+            .select("*") // Get all columns (including password)
+            .eq("email", email)
+            .single(); // We expect only one user
+
+          // 2. MATCH WITH USER INPUT
+          if (error || !data) {
+            // Email was not found in the 'admin' table
+            showMessage("Admin user not found.", "error");
+            return; // Stop the function
+          }
+
+          // Check if the password from the table matches the user's input
+          if (data.password === password) {
+            // 3. STORE LOGGED IN STATUS
+            localStorage.setItem("isAdminLoggedIn", "true");
+
+            // 4. SHOW SUCCESS MESSAGE
+            showMessage("Login successful! Redirecting...", "success");
+
+            // Redirect to the admin page on success
+            setTimeout(() => {
+              window.location.href = "admin.html"; // Redirect to your admin page
+            }, 1500);
+          } else {
+            // 5. SHOW ERROR MESSAGE (Wrong Password)
+            showMessage("Incorrect password. Please try again.", "error");
+          }
+        } catch (err) {
+          // Catch any other unexpected errors
+          showMessage(`An error occurred: ${err.message}`, "error");
+        } finally {
+          // Re-enable the button after we're done
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Login";
+        }
+      });
+    </script>
   </body>
 </html>

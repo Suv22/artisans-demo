@@ -84,9 +84,7 @@ async function renderProfile(artisan, craft, error) {
               </section>`
                 : ""
             }
-
-            // Creadentials
-            <div class="cv-sidebar-column">
+            <div class="cv-sidebar-column-mobile">
             <section class="card">
               <h2 class="card-title">Credentials</h2>
               <ul class="credentials-list">
@@ -110,6 +108,7 @@ async function renderProfile(artisan, craft, error) {
                 }
               </ul>
             </section>
+          </div>
 
             ${
               artisan.craft?.one_liner
@@ -123,24 +122,22 @@ async function renderProfile(artisan, craft, error) {
                   }">Know More</button></div>
                 </div>
                 <!-- <p>${artisan.craft?.one_liner}</p> -->
-
                 <p>${artisan.craft?.artisan_craftProcess}</p>
                 <div class="stats-row">
 
-    <div class="stat-item">
-        <p>● Average Time Required
-        : ${artisan.craft?.avg_timeReq || "N/A"}</p>
-    </div>
-    <div class="stat-item">
-        <p>● People Required: ${
-          artisan.craft?.people_required || "N/A"
-        } Artisans</p>
-    </div>
+                <div class="stat-item">
+                  <p>● Average Time Required
+                  : ${artisan.craft?.avg_timeReq || "N/A"}</p>
+                </div>
+                <div class="stat-item">
+                  <p>● People Required: ${
+                  artisan.craft?.people_required || "N/A"} Artisans</p>
+                </div>
 
-</div>
-<div class="stat-item">
-        <p>● Steps Required: ${artisan.craft?.steps_req || "N/A"}</p>
-    </div>
+                </div>
+                <div class="stat-item">
+                  <p>● Steps Required: ${artisan.craft?.steps_req || "N/A"}</p>
+                </div>
               </section>
               
               `
@@ -173,7 +170,30 @@ async function renderProfile(artisan, craft, error) {
             }
           </div>
 
-          
+          <div class="cv-sidebar-column">
+            <section class="card">
+              <h2 class="card-title">Credentials</h2>
+              <ul class="credentials-list">
+                ${
+                  artisan.lineage
+                    ? `<li><strong>Lineage:</strong> ${artisan.lineage}</li>`
+                    : ""
+                }
+                ${
+                  awards.length > 0
+                    ? `
+                  <li>
+                    <strong>Awards:</strong>
+                    <ul class="awards-sublist">
+                      ${awards
+                        .map((award) => `<li>${ICONS.award} ${award}</li>`)
+                        .join("")}
+                    </ul>
+                  </li>`
+                    : ""
+                }
+              </ul>
+            </section>
           </div>
         </div>
       </main>

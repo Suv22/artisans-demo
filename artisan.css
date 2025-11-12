@@ -380,6 +380,9 @@ ul {
     color: #efebeb;
 }
 
+.cv-sidebar-column-mobile {
+    display: none;
+}
 
 /*
 ====================================
@@ -388,6 +391,10 @@ ul {
 */
 
 @media (max-width: 768px) {
+    .cv-sidebar-column-mobile {
+        display: flex;
+    }
+
 
     /* --- General Layout --- */
     .container {
@@ -455,11 +462,13 @@ ul {
         height: 140px;
         margin-left: 25px;
     }
+
     .qr-code-container img {
         width: 88px;
         /* Make QR code smaller */
         height: 90px;
     }
+
     .qr-code-container span {
         font-size: 0.65rem;
     }
@@ -469,7 +478,8 @@ ul {
         margin: 0rem;
         /* Make main name smaller */
     }
-    .header-meta{
+
+    .header-meta {
         justify-content: center;
         margin-top: 1rem;
         font-size: 0.9rem

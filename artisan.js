@@ -38,11 +38,16 @@ async function renderProfile(artisan, craft, error) {
       <header class="profile-header container">
         <div class="header-main">
           <div class="profile-picture-container">
-            <img src="${artisan.photo_link || "placeholder.jpg"}" alt="${artisan.name}">
+            <img src="${artisan.photo_link || "placeholder.jpg"}" alt="${
+    artisan.name
+  }">
           </div>
           <div class="header-details">
-            <h1>${artisan.name}${artisan.status?.toLowerCase() === "approved"
-            ? `<img src="assets/tick.png" alt="Verified" class="verified-tick" />`: ""}</h1>
+            <h1>${artisan.name}${
+    artisan.status?.toLowerCase() === "approved"
+      ? `<img src="assets/tick.png" alt="Verified" class="verified-tick" />`
+      : ""
+  }</h1>
             <div class="header-meta">
              <span>${artisan.craft?.name || ""}</span> • 
              <span class="location">${artisan.place}</span>
@@ -50,9 +55,7 @@ async function renderProfile(artisan, craft, error) {
              
             </div>
             <div class="header-meta">
-              <span>Expertise since: ${
-                artisan.yr_experience || "N/A"
-              }</span>
+              <span>Expertise since: ${artisan.yr_experience || "N/A"}</span>
             </div>
             
           </div>
@@ -131,7 +134,8 @@ async function renderProfile(artisan, craft, error) {
                 </div>
                 <div class="stat-item">
                   <p>● People Required: ${
-                  artisan.craft?.people_required || "N/A"} Artisans</p>
+                    artisan.craft?.people_required || "N/A"
+                  } Artisans</p>
                 </div>
 
                 </div>

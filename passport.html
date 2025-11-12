@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Passport</title>
+    
+    <!-- 1. QR Code Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <!-- 2. Embedded CSS for the Passport Design -->
+    <style>
+        /* Use a common font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;5m00;600;700&display=swap');
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light grey background to see the card */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        /* Style the card to look like the image */
+        .passport-card {
+            background-color: #ff7300; /* Grey card background */
+            width: 100%;
+            max-width: 350px;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid #d1d5db;
+            box-sizing: border-box;
+        }
+
+        /* QR Code Section */
+        .qr-container {
+            position: relative;
+            /* background: white; */
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3px; /* Space for the text */
+        }
+        
+        /* This holds the QR code image */
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-text-vertical {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .qr-text-vertical-right {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        /* Artisan Details */
+        .details-section {
+            text-align: center;
+        }
+        .details-section h1 {
+            font-size: 1.8rem; /* 2xl */
+            font-weight: 700;
+            color: #000;
+            margin: 0;
+        }
+        .details-section p {
+            margin: 0px 0 0 0;
+            color: #000; /* gray-700 */
+        }
+        .details-section .craft {
+            font-size: 1.1rem; /* lg */
+            font-weight: 600;
+        }
+        .details-section .location,
+        .details-section .phone {
+            font-size: 0.7rem; /* md */
+        }
+
+        /* Bio and Photo */
+        .bio-section {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            padding-top: 10px;
+            border-top: 1px solid #000000; /* gray-400 */
+        }
+        .bio-flex {
+            display: flex;
+            align-items: center; /* Aligns items to the top */
+            text-align: left;
+            gap: 16px;
+        }
+        .bio-photo-container {
+            flex-shrink: 0; /* Prevents image from shrinking */
+        }
+        #artisan-photo {
+            width: 96px; /* w-24 */
+            height: 120px; /* custom height */
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #6b7280; /* gray-500 */
+        }
+        .bio-text {
+            font-size: 0.9rem; /* sm */
+            color: #000; /* gray-800 */
+            line-height: 1.2;
+            flex-grow: 1; /* Allows text to take remaining space */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 3. HTML Structure with IDs for your script -->
+    <div class="passport-card">
+        
+        <!-- QR Code Section -->
+        <div class="qr-container">
+            <span class="qr-text-vertical" id="qr-text-left">PINNAKHEY CONNECT </span>
+            <div id="qrcode" class="mx-2"></div>
+            <span class="qr-text-vertical-right" id="qr-text-right">GI CONNECT</span>
+        </div>
+        
+        <!-- Artisan Details -->
+        <div class="details-section">
+            <h1 id="artisan-name">Loading...</h1>
+            <p class="craft" id="artisan-craft">...</p>
+            <p class="location" id="artisan-location">...</p>
+            <p class="phone" id="artisan-phone">...</p>
+        </div>
+
+        <!-- Bio and Photo -->
+        <div class="bio-section">
+            <div class="bio-flex">
+                <div class="bio-photo-container">
+                    <img id="artisan-photo" src="https://placehold.co/100x120/ccc/333?text=Artisan" alt="Artisan Photo">
+                </div>
+                <div class="bio-text">
+                    <p id="artisan-bio">...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 4. JavaScript section -->
+    <script type="module">
+        // Import your Supabase client (make sure this path is correct!)
+        import { supabase } from './supabaseClient.js';
+
+        /**
+         * RENDER PROFILE
+         * This is the "glue" function. It takes the data from main()
+         * and fills in the HTML.
+         */
+        function renderProfile(artisan, error) {
+            if (error || !artisan) {
+                console.error("Error loading artisan:", error ? error.message : "Artisan not found");
+                document.getElementById('artisan-name').textContent = "Artisan Not Found";
+                document.getElementById('artisan-craft').textContent = "Please check the ID.";
+                return;
+            }
+
+            // --- Fill in all the details ---
+            document.getElementById('artisan-name').textContent = artisan.name || "N/A";
+            document.getElementById('artisan-craft').textContent = artisan.craft?.name || "N/A";
+            document.getElementById('artisan-location').textContent = artisan.place || "N/A";
+            document.getElementById('artisan-phone').textContent = artisan.phone || "N/A";
+            
+            // Use 'lineage' or 'one_liner' for the bio
+            document.getElementById('artisan-bio').textContent = artisan.lineage || artisan.one_liner || "No bio provided.";
+
+            // Set photo, with a fallback
+            const photoEl = document.getElementById('artisan-photo');
+            if (artisan.photo_link) {
+                photoEl.src = artisan.photo_link;
+            } else {
+                photoEl.src = `https://placehold.co/100x120/ccc/333?text=${artisan.name.split(' ')[0]}`;
+            }
+            photoEl.onerror = () => {
+                // Fallback if the link is broken
+                photoEl.src = `https://placehold.co/100x120/ccc/333?text=Error`;
+            };
+            
+            // Set QR text (using artisan_id)
+            // document.getElementById('qr-text-right').textContent = artisan.artisan_id || "N/A";
+
+            // --- Generate the QR code ---
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ''; // Clear any existing QR code
+            
+            // This QR code links to the *current page URL*, which is the key
+            new QRCode(qrContainer, {
+                text: window.location.href, 
+                width: 290,
+                height: 270,
+                colorDark : "#000000",
+                colorLight : "#ff7300",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        /**
+         * MAIN FUNCTION (Your Supabase logic)
+         * This fetches the data when the page loads.
+         */
+        async function main() {
+            const params = new URLSearchParams(window.location.search);
+            const artisanId = params.get("id");
+            const source = params.get("source");
+
+            if (!artisanId) {
+                renderProfile(null, new Error("No artisan ID provided in URL."));
+                return;
+            }
+
+            // Log a scan if the source is 'qr'
+            if (source === "qr") {
+                console.log(`QR scan detected for artisan: ${artisanId}. Logging scan...`);
+                // We run this in the background, no need to 'await'
+                supabase.functions.invoke("increment-scan-count", {
+                    body: { artisan_id: artisanId },
+                });
+                
+                // Remove the 'source=qr' from the URL to prevent re-counting on refresh
+                params.delete("source");
+                const newUrl = `${window.location.pathname}?${params.toString()}`;
+                history.replaceState(null, "", newUrl);
+            }
+
+            try {
+                // ONE query to get everything for this page
+                const { data, error } = await supabase
+                    .from("artisans_public")
+                    .select(
+                        `
+                        artisan_id,
+                        name,
+                        place,
+                        phone,
+                        photo_link,
+                        lineage,
+                        one_liner,
+                        craft:craft_id (
+                            name
+                        )
+                        `
+                    )
+                    .eq("artisan_id", artisanId)
+                    .maybeSingle(); // Use maybeSingle() in case no artisan is found
+
+                if (error) throw error;
+
+                // Call renderProfile with the data
+                renderProfile(data, null);
+            } catch (err) {
+                console.error("Failed to fetch artisan profile:", err);
+                renderProfile(null, err);
+            }
+        }
+
+        // Run the main function when the page loads
+        document.addEventListener("DOMContentLoaded", main);
+
+    </script>
+</body>
+</html>

@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburgerMenu = document.getElementById("hamburger-menu");
   const mobileNav = document.getElementById("mobile-nav");
   const searchInput = document.getElementById("search-input");
-  const filterButtons = document.querySelectorAll(".filter-btn");
+  const searchInputMobile  = document.getElementById("mobile-search-input"); 
+  const filterButtons = document.querySelectorAll(".mobile-search-input");
 
   let allCrafts = []; // store fetched data globally
 
@@ -34,6 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       li.appendChild(img);
       li.appendChild(name);
+
+       // --- Redirect on click to craft page ---
+      // prefer a slug if available, else craft id (adjust URL to match your routing)
+      const id =craft.id ;
+      console.log(id);
+      li.addEventListener("click", () => {
+        // example target page: craft.html?slug=...
+        window.location.href = `craft_pro.html?id=${id}`;
+      });
+
       craftsListElement.appendChild(li);
     });
   }
@@ -43,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const { data, error } = await supabase
         .from("crafts")
-        .select("name, hero_img");
+        .select("name, hero_img,id");
 
       if (error) throw error;
       allCrafts = data || [];
@@ -58,6 +69,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyFilters() {
     let filtered = [...allCrafts];
     const searchTerm = searchInput.value.toLowerCase().trim();
+    const searchTermMobile = searchInputMobile.value.toLowerCase().trim();
+
+    //Mobile View
+     if (searchTermMobile) {
+      filtered = filtered.filter((craft) =>
+        (craft.name?.toLowerCase().includes(searchTermMobile)) ||
+        (craft.region?.toLowerCase().includes(searchTermMobile))
+      );
+    }
 
     // 1️⃣ Search filter
     if (searchTerm) {
@@ -79,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Event Listeners ---
   searchInput.addEventListener("input", applyFilters);
+  searchInputMobile.addEventListener("input1", applyFilters);
+  
 
   filterButtons.forEach((btn) => {
     btn.addEventListener("click", () => {

@@ -120,7 +120,7 @@ table {
 }
 
 th, td {
-    padding: 1rem 1.25rem;
+    padding: 0.5rem 0.6rem;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -133,7 +133,7 @@ th {
 }
 
 td {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     font-weight: 500;
 }
 
@@ -197,6 +197,14 @@ tr:last-child td {
 }
 .modal-overlay.visible .modal-container {
     transform: scale(1);
+}
+.view-btn{
+    color: #333;
+    text-decoration: none;
+}
+.passport-view{
+     color: #333;
+    text-decoration: none;
 }
 
 .modal-header {

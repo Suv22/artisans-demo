@@ -81,7 +81,8 @@ function renderArtisans(artisans) {
             <td>${artisan.name}</td>
             <td>${artisan.place || "-"}</td>
             <td>${artisan.phone || "-"}</td>
-            <td>${artisan.aadhaar_last4 || "-"}</td>
+
+            <!--<td>${artisan.aadhaar_last4 || "-"}</td>-->
             <td>
         <span class="status-badge status-${(
           artisan.status || "pending"
@@ -93,7 +94,14 @@ function renderArtisans(artisans) {
                 <a href="artisan.html?id=${
                   artisan.artisan_id
                 }" class="view-btn">
-                    View
+                    Click to view
+                </a>
+            </td>
+            <td>
+                <a href="passport.html?id=${
+                  artisan.artisan_id
+                }" class="passport-view">
+                   View↗
                 </a>
             </td>
         `;

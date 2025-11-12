@@ -1,61 +1,98 @@
-// artisan.js<script type="module">
-
 import { supabase } from "./supabaseClient.js";
 
-// Wait for the HTML document to be fully loaded before running script
 document.addEventListener("DOMContentLoaded", () => {
-  // --- 2. Get Reference to the List ---
   const craftsListElement = document.getElementById("crafts-list");
+  const hamburgerMenu = document.getElementById("hamburger-menu");
+  const mobileNav = document.getElementById("mobile-nav");
+  const searchInput = document.getElementById("search-input");
+  const filterButtons = document.querySelectorAll(".filter-btn");
 
-  // --- 3. Function to Display Data ---
+  let allCrafts = []; // store fetched data globally
+
+  // --- Show Loading Message Initially ---
+  craftsListElement.innerHTML = `<li id="loading-message">Loading crafts...</li>`;
+
+  // --- Function to Display Crafts ---
   function displayCrafts(crafts) {
-    // Clear the "Loading..." message
     craftsListElement.innerHTML = "";
 
-    // Loop through each craft in the data
+    if (!crafts || crafts.length === 0) {
+      craftsListElement.innerHTML = `<li id="loading-message">No crafts found.</li>`;
+      return;
+    }
+
     crafts.forEach((craft) => {
-      // Create the <li> element (the card)
       const li = document.createElement("li");
-      li.className = "craft-item"; // Add CSS class
+      li.className = "craft-item";
 
-      // Create the <img> element
-      const img = document.createElement("img");        
-      img.src = craft.hero_img;
-      img.alt = craft.name; // Important for accessibility
+      const img = document.createElement("img");
+      img.src = craft.hero_img || "placeholder.jpg";
+      img.alt = craft.name || "Craft Image";
 
-      // Create the <h3> element (for the name)
       const name = document.createElement("h3");
-      name.textContent = craft.name;
+      name.textContent = craft.name || "Unnamed Craft";
 
-      // Add the image and name to the list item
       li.appendChild(img);
       li.appendChild(name);
-
-      // Add the new list item to the main list
       craftsListElement.appendChild(li);
     });
   }
 
+  // --- Fetch Crafts from Supabase ---
   async function fetchCraftsFromDB() {
     try {
-      // This is the Supabase query to get ONLY name and hero_image
       const { data, error } = await supabase
         .from("crafts")
         .select("name, hero_img");
 
-      if (error) {
-        // If there's an error, show it
-        throw error;
-      }
-
-      // If data is fetched successfully, display it
-      displayCrafts(data);
+      if (error) throw error;
+      allCrafts = data || [];
+      displayCrafts(allCrafts);
     } catch (error) {
       console.error("Error fetching crafts:", error.message);
       craftsListElement.innerHTML = `<li id="loading-message">Failed to load crafts.</li>`;
     }
   }
 
-  // 4. Call the real function INSTEAD of the mock data one
+  // --- Filter Logic ---
+  function applyFilters() {
+    let filtered = [...allCrafts];
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    // 1️⃣ Search filter
+    if (searchTerm) {
+      filtered = filtered.filter((craft) =>
+        (craft.name?.toLowerCase().includes(searchTerm)) ||
+        (craft.region?.toLowerCase().includes(searchTerm))
+      );
+    }
+
+    // 2️⃣ Button filter
+    const activeFilter = document.querySelector(".filter-btn.active").dataset.filter;
+    if (activeFilter === "regions") {
+      // Example: only show items that have region info
+      filtered = filtered.filter((craft) => craft.region && craft.region.trim() !== "");
+    }
+
+    displayCrafts(filtered);
+  }
+
+  // --- Event Listeners ---
+  searchInput.addEventListener("input", applyFilters);
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // remove 'active' from all buttons
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyFilters();
+    });
+  });
+
+  hamburgerMenu.addEventListener("click", () => {
+    mobileNav.classList.toggle("is-open");
+  });
+
+  // --- Initialize Page ---
   fetchCraftsFromDB();
 });

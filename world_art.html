@@ -101,16 +101,10 @@
         text-decoration: none;
         font-weight: 500;
       }
-
-      .content-section {
-        flex: 1; /* Take up remaining space */
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-      }
+      
       /* --- MAIN CONTENT SECTION --- */
       .content-section {
+        margin-top: 20px;
         flex-grow: 1;
         width: 100%;
         display: flex;
@@ -127,7 +121,6 @@
         margin-bottom: 3rem;
         align-items: center;
       }
-
       .search-bar {
         width: 90%;
       }
@@ -167,7 +160,6 @@
         background-color: #f5f5f5;
         border-color: #999;
       }
-
       .filter-btn.active {
         background-color: #333;
         color: white;
@@ -186,6 +178,7 @@
         width: 100%; /* take full width on mobile */
         max-width: 1200px;
         margin: 0 auto;
+        justify-items: start;
       }
 
       .artisan-card {
@@ -197,6 +190,8 @@
         transition: transform 0.2s ease-in-out, box-shadow 0.4s ease-in-out;
         cursor: pointer;
         border-radius: 6px;
+        max-width: 220px; /* or 250px if you prefer a bit larger */
+        width: 100%;
       }
 
       .artisan-card:hover {
@@ -389,7 +384,6 @@
             <!-- <a href="register.html">Register Artisan</a> -->
             <a href="our_jrny.html">Our Journey</a>
             <a href="register.html">Get Verified</a>
-
           </nav>
         </div>
         <div class="search-bar-mobile">
@@ -424,7 +418,7 @@
             <input
               type="text"
               id="search-input"
-              placeholder="Search craft, art or region..."
+              placeholder="Search artisan, art or region..."
             />
           </div>
           <div class="filter-buttons">
@@ -434,11 +428,11 @@
             <button class="filter-btn" data-filter="regions">Regions</button>
           </div>
         </div>
-
-        <div class="artisan-grid" id="artisan-grid">
-          <div class="loading-placeholder">Loading artisans...</div>
-        </div>
       </main>
+
+      <div class="artisan-grid" id="artisan-grid">
+        <div class="loading-placeholder">Loading artisans...</div>
+      </div>
 
       <footer class="main-footer">
         <div class="footer-left">
@@ -464,60 +458,7 @@
           // Toggle the 'is-open' class on the mobile navigation menu
           mobileNav.classList.toggle("is-open");
         });
-        // ----------------------------------------------------------------
-        // --- STEP 1: Connect to your Supabase project (replace with your details) ---
-        // ----------------------------------------------------------------
 
-        // const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        // const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        // const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // --- Using placeholder data for demonstration.
-        // --- To use Supabase, uncomment the lines above and the fetchArtisans() call at the bottom.
-        const placeholderArtisans = [
-          {
-            artisan_id: 1,
-            name: "Radha Devi",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Radha+D.",
-          },
-          {
-            artisan_id: 2,
-            name: "Suresh Kumar",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Suresh+K.",
-          },
-          {
-            artisan_id: 3,
-            name: "Meena Singh",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Meena+S.",
-          },
-          {
-            artisan_id: 4,
-            name: "Priya Sharma",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Priya+S.",
-          },
-          {
-            artisan_id: 5,
-            name: "Rajesh Gupta",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Rajesh+G.",
-          },
-          {
-            artisan_id: 6,
-            name: "Anjali Rao",
-            photo_url:
-              "https://via.placeholder.com/220/EAEAEA/333333?text=Anjali+R.",
-          },
-        ];
-
-        /**
-         * Renders artisan data into a grid of cards.
-         * This is the new function to display photos and names.
-         * @param {Array} artisans - An array of artisan objects.
-         */
         function renderArtisanGrid(artisans) {
           const grid = document.getElementById("artisan-grid");
           if (!grid) return;
@@ -616,6 +557,107 @@
 
         // To use real data from Supabase, comment out the line above and uncomment the line below
         fetchArtisans();
+        // --- Search and Filter Controls ---
+        const searchInput = document.getElementById("search-input");
+        const mobileSearchInput = document.getElementById("mobile-search-input");
+        const filterButtons = document.querySelectorAll(".filter-btn");
+
+        let allArtisans = []; // Store fetched artisans here
+        let currentFilter = "all"; // Track which filter is active
+
+        // Function to filter and render artisans dynamically
+        function applyFilters() {
+          let filtered = [...allArtisans];
+          const mobileQuery = mobileSearchInput.value.toLowerCase().trim();
+          if (mobileQuery) {
+            filtered = filtered.filter(
+              (a) =>
+                a.name.toLowerCase().includes(mobileQuery) ||
+                (a.craft && a.craft.toLowerCase().includes(mobileQuery)) ||
+                (a.lineage && a.lineage.toLowerCase().includes(mobileQuery)) ||
+                (a.region && a.region.toLowerCase().includes(mobileQuery))
+            );
+          }
+
+          // --- Apply search ---
+          const query = searchInput.value.toLowerCase().trim();
+          if (query) {
+            filtered = filtered.filter(
+              (a) =>
+                a.name.toLowerCase().includes(query) ||
+                (a.craft && a.craft.toLowerCase().includes(query)) ||
+                (a.lineage && a.lineage.toLowerCase().includes(query)) ||
+                (a.region && a.region.toLowerCase().includes(query))
+            );
+          }
+
+          // --- Apply button filters ---
+          if (currentFilter === "regions") {
+            // Example: show artisans that have a valid region property
+            filtered = filtered.filter((a) => a.region && a.region !== "");
+          }
+
+          // Render final list
+          renderArtisanGrid(filtered);
+        }
+
+        mobileSearchInput.addEventListener("input", () => {
+          applyFilters();
+        });
+        // --- Listen to Search Input ---
+        searchInput.addEventListener("input", () => {
+          applyFilters();
+        });
+
+        // --- Listen to Filter Buttons ---
+        filterButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            filterButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentFilter = btn.dataset.filter;
+            applyFilters();
+          });
+        });
+
+        // --- Modify fetchArtisans to save data globally ---
+        async function fetchArtisans() {
+          if (typeof supabase === "undefined") {
+            console.error("Supabase client not initialized");
+            renderArtisanGrid([]);
+            return;
+          }
+
+          const { data, error } = await supabase
+            .from("artisans_public")
+            .select("artisan_id, name, photo_link, lineage, craft");
+
+          if (error) {
+            console.error("Error fetching artisans:", error);
+            document.getElementById(
+              "artisan-grid"
+            ).innerHTML = `<p class="loading-placeholder">Failed to load data.</p>`;
+            return;
+          }
+
+          const enrichedData = data.map((artisan) => {
+            let photoUrl = null;
+            if (artisan.photo_link) {
+              const { data: urlData } = supabase.storage
+                .from("artisan_files")
+                .getPublicUrl(artisan.photo_link);
+              photoUrl = artisan.photo_link || null;
+            }
+
+            return {
+              ...artisan,
+              photo_url: photoUrl,
+            };
+          });
+
+          // Store globally and render all initially
+          allArtisans = enrichedData;
+          renderArtisanGrid(allArtisans);
+        }
       });
     </script>
   </body>

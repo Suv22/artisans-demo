@@ -426,7 +426,7 @@ ul {
 
         /* 4. Push the photo and QR to the corners */
         justify-content: space-between;
-        align-items: center;
+        align-items: end;
         /* Vertically center the pic and QR */
         gap: 1rem;
     }
@@ -450,15 +450,18 @@ ul {
 
 
     .profile-picture-container img {
-        width: 120px;
+        width: 140px;
         /* Make profile picture smaller */
-        height: 120px;
+        height: 140px;
         margin-left: 25px;
     }
     .qr-code-container img {
-        width: 90px;
+        width: 88px;
         /* Make QR code smaller */
         height: 90px;
+    }
+    .qr-code-container span {
+        font-size: 0.65rem;
     }
 
     h1 {

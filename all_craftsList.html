@@ -14,217 +14,286 @@
     <style>
       /* General Body and Font Styles */
       body,
-html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: "Inter", sans-serif;
-  color: #333;
-  background-color: #fdfdfd;
-}
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Inter", sans-serif;
+        color: #333;
+        background-color: #fdfdfd;
+      }
 
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding: 1.5rem; /* Mobile padding */
-  box-sizing: border-box;
-}
+      .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 1.5rem; /* Mobile padding */
+        box-sizing: border-box;
+      }
 
-/* --- MOBILE FIRST STYLES --- */
+      /* --- MOBILE FIRST STYLES --- */
 
-/* Header */
-.main-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-}
+      /* Header */
+      .main-header {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+      }
 
-.desktop-nav {
-  display: none; /* Hide desktop nav on mobile */
-}
+      .desktop-nav {
+        display: none; /* Hide desktop nav on mobile */
+      }
+      .content-section {
+        margin-top: 20px;
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-/* Hamburger Menu */
-.hamburger-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 1.5rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 10;
-}
+      .filter-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 3rem;
+        align-items: center;
+      }
+      .search-bar {
+        width: 90%;
+      }
 
-.hamburger-bar {
-  width: 2rem;
-  height: 0.2rem;
-  background: #333;
-  border-radius: 10px;
-  transition: all 0.3s linear;
-}
+      #search-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      #search-input:focus {
+        border-color: #999;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
 
-/* Mobile Navigation Panel */
-.mobile-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fdfdfd;
-  height: 100vh;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-  z-index: 5;
-}
+      .filter-buttons {
+        display: flex;
+        gap: 0.8rem;
+      }
 
-.mobile-nav.is-open {
-  transform: translateX(0);
-}
+      .filter-btn {
+        background-color: transparent;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+        cursor: pointer;
+        color: #555;
+        transition: all 0.3s ease;
+      }
 
-.mobile-nav nav {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
+      .filter-btn:hover {
+        background-color: #f5f5f5;
+        border-color: #999;
+      }
+      .filter-btn.active {
+        background-color: #333;
+        color: white;
+        border-color: #333;
+      }
 
-.mobile-nav a {
-  font-size: 1.5rem;
-  padding: 1rem;
-  color: #333;
-  text-decoration: none;
-  font-weight: 500;
-}
+      /* Hamburger Menu */
+      .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 2rem;
+        height: 1.5rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+      }
 
-/* --- Craft List (MOBILE FIRST) --- */
-#crafts-list {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr; /* One column on small screens */
-  gap: 20px;
-  width: 100%;
-  margin-top: 2rem;
-}
+      .hamburger-bar {
+        width: 2rem;
+        height: 0.2rem;
+        background: #333;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+      }
 
-.craft-item {
-  background-color: #ffffff;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-}
+      /* Mobile Navigation Panel */
+      .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fdfdfd;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 5;
+      }
 
-.craft-item:hover {
-  transform: translateY(-5px);
-}
+      .mobile-nav.is-open {
+        transform: translateX(0);
+      }
 
-.craft-item img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-}
+      .mobile-nav nav {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
 
-.craft-item h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #555;
-  padding: 16px;
-  margin: 0;
-  text-align: center;
-}
+      .mobile-nav a {
+        font-size: 1.5rem;
+        padding: 1rem;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+      }
 
-/* Loading message */
-#loading-message {
-  font-size: 1.1rem;
-  color: #777;
-  text-align: center;
-}
+      /* --- Craft List (MOBILE FIRST) --- */
+      #crafts-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr; /* One column on small screens */
+        gap: 20px;
+        width: 100%;
+        margin-top: 2rem;
+      }
 
-/* Footer */
-.main-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: center;
-  width: 100%;
-  padding-top: 2rem;
-  font-size: 0.8rem;
-  color: #666;
-}
+      .craft-item {
+        background-color: #ffffff;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+      }
 
-.footer-right {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
+      .craft-item:hover {
+        transform: translateY(-5px);
+      }
 
-.footer-right a {
-  text-decoration: none;
-  color: #666;
-}
+      .craft-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+      }
 
-/* --- DESKTOP STYLES --- */
-@media (min-width: 768px) {
-  .page-container {
-    padding: 2rem 4rem;
-  }
+      .craft-item h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #555;
+        padding: 16px;
+        margin: 0;
+        text-align: center;
+      }
 
-  .main-header {
-    justify-content: space-between;
-  }
+      /* Loading message */
+      #loading-message {
+        font-size: 1.1rem;
+        color: #777;
+        text-align: center;
+      }
 
-  .desktop-nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
+      /* Footer */
+      .main-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        width: 100%;
+        padding-top: 2rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
 
-  .nav-left,
-  .nav-right {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
+      .footer-right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
 
-  .desktop-nav a {
-    text-decoration: none;
-    color: #333;
-    font-size: 0.9rem;
-  }
+      .footer-right a {
+        text-decoration: none;
+        color: #666;
+      }
 
-  .hamburger-menu {
-    display: none;
-  }
+      /* --- DESKTOP STYLES --- */
+      @media (min-width: 768px) {
+        .page-container {
+          padding: 2rem 4rem;
+        }
 
-  /* Craft list grid for larger screens */
-  #crafts-list {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    min-height: 100vh;
-  }
+        .main-header {
+          justify-content: space-between;
+        }
 
-  #loading-message {
-    grid-column: 1 / -1;
-  }
+        .desktop-nav {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+        h1 {
+          text-align: start;
+          margin-bottom: 0.5rem;
+        }
 
-  .main-footer {
-    flex-direction: row;
-    justify-content: space-between;
-  }
+        .nav-left,
+        .nav-right {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
+        }
 
-  .footer-right a {
-    margin-left: 1.5rem;
-  }
-}
+        .desktop-nav a {
+          text-decoration: none;
+          color: #333;
+          font-size: 0.9rem;
+        }
 
+        .filter-controls {
+          margin-bottom: 0rem;
+        }
+
+        .hamburger-menu {
+          display: none;
+        }
+
+        /* Craft list grid for larger screens */
+        #crafts-list {
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          min-height: 100vh;
+        }
+
+        #loading-message {
+          grid-column: 1 / -1;
+        }
+
+        .main-footer {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .footer-right a {
+          margin-left: 1.5rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -263,8 +332,26 @@ html {
           <a href="verificatn.html">Verification Standards</a>
           <a href="our_jrny.html">Our Journey</a>
           <a href="register.html">Get Verified</a>
+          <a href="index.html">Home</a>
         </nav>
       </div>
+      <main class="content-section">
+        <div class="filter-controls">
+          <div class="search-bar">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search craft, art or region..."
+            />
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+              All Crafts
+            </button>
+            <button class="filter-btn" data-filter="regions">Regions</button>
+          </div>
+        </div>
+      </main>
 
       <h1>All Crafts</h1>
 
@@ -284,7 +371,7 @@ html {
         </div>
       </footer>
     </div>
-    
+
     <script type="module" src="all_crafts.js"></script>
   </body>
 </html>

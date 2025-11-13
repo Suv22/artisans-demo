@@ -380,9 +380,13 @@ ul {
     color: #efebeb;
 }
 
-.cv-sidebar-column-mobile {
-    display: none;
+.cv-sidebar-column {
+    display: flex;
 }
+.cv-sidebar-column-mobile {
+        display: none;
+    }
+
 
 /*
 ====================================
@@ -394,6 +398,7 @@ ul {
     .cv-sidebar-column-mobile {
         display: flex;
     }
+
 
 
     /* --- General Layout --- */
@@ -420,7 +425,7 @@ ul {
     .header-main {
         /* 1. Change from flex to grid */
         display: grid;
-        
+
         /* 2. Define two columns (one for pic, one for QR) */
         grid-template-columns: auto auto;
 
